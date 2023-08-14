@@ -4,6 +4,14 @@
 
     include("../componentes/head.php");
 
+    ?>
+        
+        <a href="inicio.php">Postulantes</a>
+    
+        <a href="propuestas.php">Tus propuestas</a>
+    
+    <?php
+
     $id_empresa = $_SESSION["id_empresa"];
 
     $query = "SELECT * FROM t_postulantes INNER JOIN t_tecnicos ON t_postulantes.id_tecnico = t_tecnicos.id_tecnico INNER JOIN t_propuestas ON t_postulantes.id_propuesta = t_propuestas.id_propuesta WHERE id_empresa = '$id_empresa'";
