@@ -1,32 +1,24 @@
 <?php
 
-    include("app/modelo/conexion.php");
+    function mostrarSiExiste($indice){
 
-    function mostrarSiExiste($name){
+        if(isset($_POST[$indice])){
 
-        if(isset($_POST[$name])){
-
-            echo $_POST[$name];
+            echo $_POST[$indice];
 
         }
 
     }
+
+    require_once "app/controlador/C_Usuario.php";
+
+    $usuario = new C_Usuario();
 
     session_start();
 
-    if(isset($_SESSION["id_usuario"])){
+    unset($_SESSION["id_rol"]);
 
-        if($_SESSION["id_rol"] == 13){
-
-            header("Location: app/vista_empresa/inicio.php");
-
-        }else{
-
-            header("Location: app/vista_tecnico/inicio.php");
-
-        }
-
-    }
+    unset($_SESSION["id_usuario"]);
 
 ?>
 
@@ -52,81 +44,128 @@
 
         <a href="login.php">Login</a>
 
+        <a href="registro.php">Registro</a>
+
     </header>
 
-    <h1>Login</h1>
-
-    <form action="login.php" method="POST">
-
-        <label for="gmail">
-
-            <span>Gmail</span>
-
-            <input type="email" name="gmail" id="gmail" value="<?php mostrarSiExiste("gmail"); ?>" required autofocus>
-
-        </label>
-
-        <label for="contrasena">
-
-            <span>Contraseña</span>
-
-            <input type="password" name="contrasena" id="contrasena" required>
-
-        </label>
-
-        <button name="btn_login">Iniciar Sesión</button>
-
-    </form>
-
     <?php
-    
-        if(isset($_POST["btn_login"])){
 
-            $gmail = $_POST["gmail"];
+    if(isset($_POST["btn_login"])){
 
-            $contrasena = $_POST["contrasena"];
+        $existe_gmail = $usuario->validarGmail($_POST["gmail"]);
 
-            $query = "SELECT id_usuario, gmail, contrasena, id_rol FROM t_usuarios WHERE gmail = '$gmail' AND contrasena = '$contrasena'";
+        if($existe_gmail == false){ $_SESSION["msj"] = "No existe una cuenta con esa dirección de correo electrónico"; }else{
 
-            $res = mysqli_query($con, $query);
+            $id_usuario = $usuario->validarClave($_POST["gmail"], $_POST["clave"]);
 
-            if(!mysqli_num_rows($res) == 1){ echo "Usuario o contraseña incorrectos"; }else{
+            if($id_usuario == false){ $_SESSION["msj"] = "Contraseña incorrecta"; }else{
 
-                $fila = mysqli_fetch_array($res);
+                $id_usuario = $id_usuario;
 
-                $id_usuario = $fila["id_usuario"];
+                $caso = $usuario->definirRol($id_usuario);
 
-                $_SESSION["id_usuario"] = $fila["id_usuario"];
+                switch ($caso) {
+                    case $caso[0] == 1:
 
-                $_SESSION["id_rol"] = $fila["id_rol"];
+                        // Administrador
 
-                if($fila["id_rol"] == 13){
+                        $_SESSION["id_rol"] = $caso[1];
 
-                    $query = "SELECT id_empresa FROM t_empresas WHERE id_usuario = '$id_usuario'";
+                        $_SESSION["id_usuario"] = $caso[2];
 
-                    $res = mysqli_query($con, $query);
+                        header("Location: app/vista/adm.php");
 
-                    if(mysqli_num_rows($res) == 1){
+                        break;
 
-                        $fila = mysqli_fetch_array($res);
+                    case $caso[0] == 2:
 
-                        $_SESSION["id_empresa"] = $fila["id_empresa"];
+                        // Técnico
 
-                        header("Location: app/vista_empresa/inicio.php");
+                        $_SESSION["id_rol"] = $caso[1];
 
-                    }
+                        $_SESSION["id_usuario"] = $caso[2];
 
-                }else{
+                        $_SESSION["id_tecnico"] = $caso[2];
 
-                    header("Location: app/vista_tecnico/inicio.php");
+                        header("Location: app/vista/tec.php");
 
+                        break;
+
+                    case $caso[0] == 3:
+
+                        // Empresa
+
+                        $_SESSION["id_rol"] = $caso[1];
+
+                        $_SESSION["id_usuario"] = $caso[2];
+
+                        $_SESSION["id_empresa"] = $caso[3];
+
+                        header("Location: app/vista/emp.php");
+
+                        break;
+
+                    case $caso[0] == 4:
+
+                        // Registro incompleto
+
+                        $_SESSION["id_usuario"] = $caso[2];
+
+                        $_SESSION["id_rol"] = $caso[1];
+                        
+                        header("Location: registro.php");
+
+                        break;
+                    
+                    default:
+
+                        echo "Algo salió mal";
+
+                        break;
                 }
-
+    
             }
 
         }
-    
+
+    }
     ?>
+
+    <form action="login.php" method="POST">
+
+        <h1>Login</h1>
+
+        <?php
+
+        if(isset($_SESSION["msj"])){
+
+            echo $_SESSION["msj"] ."<br>";
+
+            unset($_SESSION["msj"]);
+            
+        }
+
+        ?>
+
+        <label for="gmail">
+
+            <span>Gmail (*)</span>
+
+            <input type="email" name="gmail" id="gmail" placeholder="usuario@ejemplo.com" value="<?php mostrarSiExiste("gmail"); ?>" autofocus required>
+
+        </label>
+
+        <label for="clave">
+
+            <span>Contraseña (*)</span>
+
+            <input type="password" name="clave" id="clave" required>
+
+        </label>
+
+        <button type="submit" name="btn_login">Iniciar sesión</button>
+
+    </form>
 
 </body>
 

@@ -1,20 +1,34 @@
 <?php
 
-    session_start();
+session_start();
 
-    if(isset($_SESSION["id_usuario"])){
+switch ($_SESSION["id_rol"]) {
 
-        if($_SESSION["id_rol"] == 13){
+    case 15:
 
-            header("Location: app/vista_empresa/inicio.php");
+        header("Location: app/vista/adm.php");
 
-        }else{
+        break;
 
-            header("Location: app/vista_tecnico/inicio.php");
+    case 14:
+    
+        header("Location: app/vista/tec.php");
+    
+        break;
 
-        }
+    case 13:
+    
+        header("Location: app/vista/emp.php");
+    
+        break;
+    
+    default:
 
-    }
+        # code...
+
+        break;
+        
+}
 
 ?>
 
@@ -39,6 +53,8 @@
         <a href="index.php">Tecno Connect</a>
 
         <a href="login.php">Login</a>
+
+        <a href="registro.php">Registro</a>
 
     </header>
 
@@ -70,4 +86,4 @@
 
         nombre de las id: "id" + "_" + nombre_de_la_tabla_en_singular
 
- -->
+-->
