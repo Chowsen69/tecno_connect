@@ -73,6 +73,10 @@
 
                         $_SESSION["id_usuario"] = $caso[2];
 
+                        $_SESSION["id_tecnico"] = $caso[2];
+
+                        $_SESSION["id_empresa"] = $caso[3];
+
                         header("Location: app/vista/adm.php");
 
                         break;

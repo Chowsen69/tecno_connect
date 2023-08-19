@@ -10,6 +10,6 @@ if($_SESSION["id_rol"] != 15){
 
 ?>
 
-    <h1>Hola desde la vista de administrador</h1>
+    <h1>Vista de administrador</h1>
 
 <?php require_once "componentes/footer.php"; ?>

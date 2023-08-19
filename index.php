@@ -2,32 +2,36 @@
 
 session_start();
 
-switch ($_SESSION["id_rol"]) {
+if(isset($_SESSION["id_rol"])){
 
-    case 15:
+    switch ($_SESSION["id_rol"]) {
 
-        header("Location: app/vista/adm.php");
+        case 15:
 
-        break;
+            header("Location: app/vista/adm.php");
 
-    case 14:
-    
-        header("Location: app/vista/tec.php");
-    
-        break;
+            break;
 
-    case 13:
-    
-        header("Location: app/vista/emp.php");
-    
-        break;
-    
-    default:
-
-        # code...
-
-        break;
+        case 14:
         
+            header("Location: app/vista/tec.php");
+        
+            break;
+
+        case 13:
+        
+            header("Location: app/vista/emp.php");
+        
+            break;
+        
+        default:
+
+            # code...
+
+            break;
+          
+    }
+
 }
 
 ?>

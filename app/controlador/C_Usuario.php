@@ -14,9 +14,9 @@
 
         public function guardarUsuario($id_rol, $gmail, $clave){
 
-            $avatar = "C://xampp/htdocs/tecno_connect/publico/img/avatar/por_defecto.png";
+            $avatar = "../../publico/img/avatar/por_defecto.png";
 
-            $portada = "C://xampp/htdocs/tecno_connect/publico/img/portada/por_defecto.png";
+            $portada = "../../publico/img/portada/por_defecto.png";
 
             $id_usuario = $this->modelo->insertar($id_rol, $gmail, $clave, $avatar, $portada);
 
@@ -66,8 +66,9 @@
 
             if(isset($adm["id_usuario"])){
 
-                // ADMINISTRADOR
-                return [1, $adm["id_rol"], $adm["id_usuario"]];
+                $emp_adm = $this->modelo->buscarEmpresa($adm["id_usuario"]);
+
+                return [1, $adm["id_rol"], $adm["id_usuario"], $emp_adm["id_empresa"]];
 
             }else if(isset($tec["id_tecnico"])){
 
@@ -94,13 +95,21 @@
 
         }
 
-        public function cerrarSesion(){
+        public function mostrarPerfilAdmin($id_usuario){
 
-            session_start();
+            $datos = $this->modelo->datosUsuario($id_usuario, "*");
 
-            unset($_SESSION["id_usuario"]);
+            ?>
+            
+            <img src="<?= $datos["portada"]; ?>">
 
-            unset($_SESSION["id_rol"]);
+            <img src="<?= $datos["avatar"]; ?>">
+
+            <h1>Perfil de administrador</h1>
+
+            <h3><?= $datos["gmail"]; ?></h3>
+
+            <?php
 
         }
     }

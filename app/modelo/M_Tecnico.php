@@ -34,6 +34,23 @@
 
         }
 
+        public function seleccionarTecnico($id_tecnico){
+
+            $accion = $this->con->prepare("SELECT * FROM t_tecnicos 
+            INNER JOIN t_usuarios 
+                ON t_tecnicos.id_tecnico = t_usuarios.id_usuario 
+            INNER JOIN t_especialidades 
+                ON t_tecnicos.id_especialidad = t_especialidades.id_especialidad
+            INNER JOIN t_tecnicas
+                ON t_tecnicos.id_tecnica = t_tecnicas.id_tecnica 
+            WHERE id_tecnico = :id_tecnico");
+
+            $accion->bindParam(":id_tecnico", $id_tecnico);
+
+            return ($accion->execute()) ? $accion->fetch() : false;
+
+        }
+
         public function traerTecnicas(){
 
             $accion = $this->con->prepare("SELECT * FROM t_tecnicas");
