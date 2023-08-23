@@ -16,9 +16,37 @@
 
     session_start();
 
-    unset($_SESSION["id_rol"]);
+    if(isset($_SESSION["id_rol"])){
 
-    unset($_SESSION["id_usuario"]);
+        switch ($_SESSION["id_rol"]) {
+    
+            case 15:
+    
+                header("Location: app/vista/adm.php");
+    
+                break;
+    
+            case 14:
+            
+                header("Location: app/vista/tec.php");
+            
+                break;
+    
+            case 13:
+            
+                header("Location: app/vista/emp.php");
+            
+                break;
+            
+            default:
+    
+                # code...
+    
+                break;
+              
+        }
+    
+    }
 
 ?>
 
@@ -91,6 +119,9 @@
 
                         $_SESSION["id_tecnico"] = $caso[2];
 
+                        // ID EMPRESA VA COMO FALSE
+                        $_SESSION["id_empresa"] = false;
+
                         header("Location: app/vista/tec.php");
 
                         break;
@@ -104,6 +135,9 @@
                         $_SESSION["id_usuario"] = $caso[2];
 
                         $_SESSION["id_empresa"] = $caso[3];
+
+                        // ID TÉCNICO VA VACÍO CON FALSE
+                        $_SESSION["id_tecnico"] = false;
 
                         header("Location: app/vista/emp.php");
 

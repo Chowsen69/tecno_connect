@@ -32,6 +32,12 @@
 
             // EMPRESA
 
+            require_once "../controlador/C_Empresa.php";
+
+            $c_empresa = new C_Empresa();
+
+            $c_empresa->mostrarPerfilEmpresa($_GET["id_usuario"]);
+
             break;
 
         default:

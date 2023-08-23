@@ -18,6 +18,12 @@
 
         }
 
+        public function guardarServicios($id_tecnico, $perfil_tec, $id_ubicacion){
+
+            $this->m_servicio->insertar($id_tecnico, $perfil_tec, $id_ubicacion);
+
+        }
+
         public function listaSubHabilidades(){
 
             $habilidades = $this->m_habilidad->recorrerHabilidades();

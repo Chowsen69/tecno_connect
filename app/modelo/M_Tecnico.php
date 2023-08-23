@@ -51,6 +51,30 @@
 
         }
 
+        public function tecnicoTieneServicio($id_tecnico){
+
+            // FUNCIÓN PARA PREGUNTAR SI UN TÉCNICO TIENE O NO AÑADIDO UN SERVICIO
+
+            $accion = $this->con->prepare("SELECT * FROM t_servicios INNER JOIN t_ubicaciones ON t_servicios.id_ubicacion = t_ubicaciones.id_ubicacion WHERE id_servicio = :id_tecnico");
+
+            $accion->bindParam(":id_tecnico", $id_tecnico);
+
+            return ($accion->execute()) ? $accion->fetch() : false;
+
+        }
+
+        public function subHabilidadesDelTecnico($id_servicio){
+
+            // FUNCIÓN QUE RETORNA LAS SUB-HABILIDADES QUE TIENE UN TÉCNICO
+
+            $accion = $this->con->prepare("SELECT * FROM t_r_sub_habilidad_servicio INNER JOIN t_sub_habilidades ON t_r_sub_habilidad_servicio.id_sub_habilidad = t_sub_habilidades.id_sub_habilidad WHERE id_servicio = :id_servicio");
+
+            $accion->bindParam(":id_servicio", $id_servicio);
+
+            return ($accion->execute()) ? $accion->fetchAll() : false;
+
+        }
+
         public function traerTecnicas(){
 
             $accion = $this->con->prepare("SELECT * FROM t_tecnicas");

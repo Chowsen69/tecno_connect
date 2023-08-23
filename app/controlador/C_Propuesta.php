@@ -36,9 +36,17 @@
 
         }
 
-        public function mostrarPropuestas(){
+        public function mostrarPropuestas($id_usuario){
 
-            $filas = $this->modelo->traerPropuestas();
+            if($id_usuario == false){
+
+                $filas = $this->modelo->traerPropuestas();
+            
+            }else{
+
+                $filas = $this->modelo->traerPropuestasEmpresa($id_usuario);
+
+            }
 
             ?>
             

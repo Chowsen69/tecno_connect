@@ -16,6 +16,6 @@ if(empty($_SESSION["id_tecnico"])){
 
     <h1>Vista de tecnico</h1>
 
-<?php $obj_inicio->mostrarPropuestas(); ?>
+<?php $obj_inicio->mostrarPropuestas(false); ?>
 
 <?php require_once "componentes/footer.php"; ?>

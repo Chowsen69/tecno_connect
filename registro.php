@@ -77,7 +77,7 @@
 
         $id_usuario = $_SESSION["id_usuario"];
 
-        $id_empresa = $empresa->guardarEmpresa($id_usuario, $_POST["nom_empr"], $_POST["cuit"], $_POST["localidad"], $_POST["sitio_web"], $_POST["tipo"], $_POST["tamano"]);
+        $id_empresa = $empresa->guardarEmpresa($id_usuario, $_POST["nom_empr"], $_POST["cuit"], $_POST["localidad"], $_POST["sitio_web"], $_POST["sector"], $_POST["tipo"], $_POST["tamano"]);
 
         if($id_empresa != false ){
 
@@ -114,6 +114,7 @@
 
     ?>
 
+    <!-- FORMULARIOS DE REGISTRO -->
     <?php if(empty($_SESSION["id_usuario"])): ?>
         <!-- FORMULARIO REGISTRO - PASO UNO -->
         <form action="registro.php" method="POST">
@@ -239,7 +240,7 @@
 
                 <span>Sector (*)</span>
 
-                <input type="text" name="sector" id="sector" value="<?php mostrarSiExiste("sector") ?>" required>
+                <input type="text" name="sector" id="sector" value="<?php mostrarSiExiste("sector") ?>" required placeholder="A qué se dedica tu empresa">
 
             </label>
             
@@ -388,12 +389,6 @@
 
         </form>
     <?php endif; ?>
-
-    <?php
-    
-    print_r($_SESSION);
-
-    ?>
 
 </body>
 
