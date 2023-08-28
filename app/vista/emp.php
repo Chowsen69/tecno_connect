@@ -2,32 +2,9 @@
 
 require_once "componentes/head.php";
 
-require_once "C://xampp/htdocs/tecno_connect/app/controlador/C_Propuesta.php";
-
-$obj_propuesta = new C_Propuesta();
-
 if(empty($_SESSION["id_empresa"])){
 
     header("Location: ../../index.php");
-
-}
-
-// GENERAR PROPUESTA
-if(isset($_POST["btn_propuesta"])){
-
-    $si_existe = $obj_propuesta->siExisteLaPropuesta($_SESSION["id_empresa"], $_POST["titulo"], $_POST["descr"], $_POST["pago_min"], $_POST["limite"]);
-
-    if($si_existe == false){
-
-        $id_propuesta = $obj_propuesta->generarPropuesta($_SESSION["id_empresa"], $_POST["titulo"], $_POST["descr"], $_POST["pago_min"], $_POST["limite"]);
-
-        if($id_propuesta != false){
-
-            echo "Se generó tu propuesta correctamente";
-
-        }
-
-    }
 
 }
 
@@ -36,7 +13,7 @@ if(isset($_POST["btn_propuesta"])){
     <h1>Vista de empresa</h1>
 
     <!-- FORMULARIO PARA GENERAR UNA PROPUESTA -->
-    <form action="emp.php" method="POST">
+    <form action="../controlador/empresa/insertar_propuesta.php" method="POST">
 
         <h2>Generar nueva propuesta laboral</h2>
 
@@ -76,6 +53,8 @@ if(isset($_POST["btn_propuesta"])){
 
     </form>
 
-    <?php $obj_propuesta->mostrarPostulantes($_SESSION["id_empresa"]); ?>
+    <?php $query = "SELECT * FROM t_propuestas INNER JOIN t_empresas ON t_propuestas.id_empresa = t_empresas.id_empresa INNER JOIN t_usuarios ON t_empresas.id_usuario = t_usuarios.id_usuario WHERE t_propuestas.id_empresa = '$_SESSION[id_empresa]'"; ?>
+
+    <?php require_once ("../controlador/seleccionar_propuestas.php"); ?>
 
 <?php require_once "componentes/footer.php"; ?>

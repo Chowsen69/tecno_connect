@@ -15,6 +15,8 @@
 <body>
 
     <?php 
+
+    require_once "../modelo/conexion.php";
     
     session_start();
 

@@ -10,17 +10,7 @@
 
     }
 
-    require_once "app/controlador/C_Usuario.php";
-                    
-    require_once "app/controlador/C_Empresa.php";
-                    
-    require_once "app/controlador/C_Tecnico.php";
-
-    $usuario = new C_Usuario();
-
-    $empresa = new C_Empresa();
-    
-    $tecnico = new C_Tecnico();
+    require_once "app/modelo/conexion.php";
 
     session_start();
 
@@ -58,34 +48,45 @@
     // REGISTRAR - PASO 1
     if(isset($_POST["btn_registrar_uno"])){
 
-        if($usuario->validarGmail($_POST["gmail"])){ $_SESSION["msj"] = "Ese gmail ya está en uso, escoja otro"; }else{
-            // EL GMAIL EXISTE EN LA BASE DE DATOS
+        $existe_gmail = mysqli_num_rows(mysqli_query($con, "SELECT gmail FROM t_usuarios WHERE gmail = '$_POST[gmail]'"));
+
+        if($existe_gmail == true){ $_SESSION["msj"] = "Ese gmail ya está en uso, escoja otro"; }else{
+            // EN CASO DE QUE EL GMAIL NO ESTÉ EN USO
             if($_POST["clave"] != $_POST["rep_clave"]){ $_SESSION["msj"] = "Las contraseñas no coinciden"; }else{
                 
-                // LAS CONTRASEÑAS COINCIDEN
-                $id_usuario = $usuario->guardarUsuario($_POST["id_rol"], $_POST["gmail"], $_POST["clave"]);
+                // Y SI LAS CONTRASEÑAS COINCIDEN
 
-                $_SESSION["id_usuario"] = $id_usuario;
+                $avatar = "../../publico/img/avatar/por_defecto.png";
 
-                $_SESSION["id_rol"] = $_POST["id_rol"];
+                $portada = "../../publico/img/portada/por_defecto.png";
+
+                if(mysqli_query($con, "INSERT INTO t_usuarios(id_rol, gmail, contrasena, avatar, portada, fecha_creacion) VALUES('$_POST[id_rol]', '$_POST[gmail]', '$_POST[clave]', '$avatar', '$portada', now())")){
+
+                    unset($_SESSION["msj"]);
+
+                    $_SESSION["id_usuario"] = mysqli_insert_id($con);
+
+                    $_SESSION["id_rol"] = $_POST["id_rol"];
+
+                }else{
+
+                    $_SESSION["msj"] = "Lo sentimos, algo salió mal :(";
+
+                }
 
             }
         }
 
     // PASO DOS - REGISTRAR UNA EMPRESA
     }else if(isset($_POST["btn_registrar_empr"])){
+        
+        if(mysqli_query($con, "INSERT INTO t_empresas(id_usuario, nombre_empresa, cuit, localidad, sitio_web, sector, id_tipo, id_tamano, fecha_creacion) VALUES ('$_SESSION[id_usuario]', '$_POST[nom_empr]', '$_POST[cuit]', '$_POST[localidad]', '$_POST[sitio_web]', '$_POST[sector]', '$_POST[tipo]', '$_POST[tamano]', now())")){
 
-        $id_usuario = $_SESSION["id_usuario"];
-
-        $id_empresa = $empresa->guardarEmpresa($id_usuario, $_POST["nom_empr"], $_POST["cuit"], $_POST["localidad"], $_POST["sitio_web"], $_POST["sector"], $_POST["tipo"], $_POST["tamano"]);
-
-        if($id_empresa != false ){
+            $_SESSION["msj"] = "Felicidades, te registraste exitósamente";
 
             unset($_SESSION["id_usuario"]);
 
             unset($_SESSION["id_rol"]);
-
-            $_SESSION["msj"] = "Felicidades, te registraste exitósamente";
 
             header("Location: login.php");
 
@@ -94,11 +95,7 @@
     // PASO DOS - REGISTRAR UN TÉCNICO
     }else if(isset($_POST["btn_registrar_tec"])){
 
-        $id_usuario = $_SESSION["id_usuario"];
-
-        $id_tecnico = $tecnico->guardarTecnico($id_usuario, $_POST["nombre"], $_POST["apellido"], $_POST["dni"], $_POST["tecnica"], $_POST["especialidad"]);
-
-        if($id_tecnico != false ){
+        if(mysqli_query($con, "INSERT INTO t_tecnicos(id_tecnico, nombre, apellido, dni, id_tecnica, id_especialidad, fecha_creacion) VALUES('$_SESSION[id_usuario]', '$_POST[nombre]', '$_POST[apellido]', '$_POST[dni]', '$_POST[tecnica]', '$_POST[especialidad]', now())")){
 
             $_SESSION["msj"] = "Felicidades, te registraste exitósamente";
 
@@ -114,24 +111,25 @@
 
     ?>
 
+    <!-- TÍTULO (REGISTRAR USUARIO/UN PASO MÁS) -->
+    <h1><?php if(empty($_SESSION["id_rol"])): echo "Registrar usuario"; else: echo "Un paso más"; endif; ?></h1>
+
+    <?php
+
+    if(!empty($_SESSION["msj"])){
+
+        echo $_SESSION["msj"] ."<br>";
+
+        unset($_SESSION["msj"]);
+
+    }
+
+    ?>
+
     <!-- FORMULARIOS DE REGISTRO -->
     <?php if(empty($_SESSION["id_usuario"])): ?>
         <!-- FORMULARIO REGISTRO - PASO UNO -->
         <form action="registro.php" method="POST">
-
-            <h1>Registro - Paso uno</h1>
-
-            <?php
-            
-            if(isset($_SESSION["msj"])){
-
-                echo $_SESSION["msj"] ."<br>";
-
-                // unset($_SESSION["msj"]);
-
-            }
-
-            ?>
 
             <label for="gmail">
 
@@ -190,20 +188,6 @@
         <!-- FORMULARIO PASO DOS - REGISTRAR UNA EMPRESA -->
         <form action="registro.php" method="POST">
 
-            <h1>¡Un paso más</h1>
-
-            <?php
-
-            if(isset($_SESSION["msj"])){
-
-                echo $_SESSION["msj"] ."<br>";
-
-                // unset($_SESSION["msj"]);
-
-            }
-
-            ?>
-
             <label for="nom_empr">
 
                 <span>Nombre de la empresa (*)</span>
@@ -254,13 +238,13 @@
 
                     <?php
 
-                    $filas = $empresa->tiposEmpresas();
+                    $res = mysqli_query($con, "SELECT * FROM t_tipos");
 
-                    foreach($filas as $fila):
+                    while($fila = mysqli_fetch_array($res)){
 
-                        ?><option value="<?= $fila["id_tipo"] ?>"><?= $fila["tipo"] ?></option><?php
+                        ?><option value="<?=$fila["id_tipo"]?>"><?=$fila["tipo"]?></option><?php
 
-                    endforeach;
+                    }
 
                     ?>
 
@@ -278,13 +262,13 @@
 
                     <?php
 
-                    $filas = $empresa->tamanosEmpresas();
+                    $res = mysqli_query($con, "SELECT * FROM t_tamanos");
 
-                    foreach($filas as $fila):
+                    while($fila = mysqli_fetch_array($res)){
 
-                        ?><option value="<?= $fila["id_tamano"] ?>"><?= $fila["tamano"] ?></option><?php
+                        ?><option value="<?=$fila["id_tamano"]?>"><?=$fila["tamano"]?></option><?php
 
-                    endforeach;
+                    }
 
                     ?>
 
@@ -292,26 +276,14 @@
 
             </label>
 
+            <button type="reset"><a href="app/controlador/cerrar_sesion.php">Cancelar</a></button>
+
             <button type="submit" name="btn_registrar_empr">Completar registro</button>
 
         </form>
     <?php elseif($_SESSION["id_rol"] == 14): ?>
         <!-- FORMULARIO PASO DOS - REGISTRAR UN TÉCNICO -->
         <form action="registro.php" method="POST">
-
-            <h1>¡Un paso más!</h1>
-
-            <?php
-
-            if(isset($_SESSION["msj"])){
-
-                echo $_SESSION["msj"] ."<br>";
-
-                // unset($_SESSION["msj"]);
-
-            }
-
-            ?>
 
             <label for="nombre">
 
@@ -347,13 +319,13 @@
 
                     <?php
 
-                    $filas = $tecnico->tecnicas();
+                    $res = mysqli_query($con, "SELECT * FROM t_tecnicas");
 
-                    foreach($filas as $fila):
+                    while($fila = mysqli_fetch_array($res)){
 
                         ?><option value="<?= $fila["id_tecnica"] ?>"><?= $fila["tecnica"] ?></option><?php
 
-                    endforeach;
+                    }
 
                     ?>
 
@@ -371,19 +343,21 @@
 
                     <?php
 
-                    $filas = $tecnico->especialidades();
+                    $res = mysqli_query($con, "SELECT * FROM t_especialidades");
 
-                    foreach($filas as $fila):
+                    while($fila = mysqli_fetch_array($res)){
 
                         ?><option value="<?= $fila["id_especialidad"] ?>"><?= $fila["especialidad"] ?></option><?php
 
-                    endforeach;
+                    }
 
                     ?>
 
                 </select>
 
             </label>
+
+            <button type="reset"><a href="app/controlador/cerrar_sesion.php">Cancelar</a></button>
 
             <button type="submit" name="btn_registrar_tec">Completar registro</button>
 

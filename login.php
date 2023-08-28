@@ -1,7 +1,7 @@
 <?php
 
     function mostrarSiExiste($indice){
-
+        // UTILIZADO EN LA PROPIEDAD "VALUE" DE LOS FORMULARIOS
         if(isset($_POST[$indice])){
 
             echo $_POST[$indice];
@@ -10,43 +10,9 @@
 
     }
 
-    require_once "app/controlador/C_Usuario.php";
-
-    $usuario = new C_Usuario();
+    require_once "app/modelo/conexion.php";
 
     session_start();
-
-    if(isset($_SESSION["id_rol"])){
-
-        switch ($_SESSION["id_rol"]) {
-    
-            case 15:
-    
-                header("Location: app/vista/adm.php");
-    
-                break;
-    
-            case 14:
-            
-                header("Location: app/vista/tec.php");
-            
-                break;
-    
-            case 13:
-            
-                header("Location: app/vista/emp.php");
-            
-                break;
-            
-            default:
-    
-                # code...
-    
-                break;
-              
-        }
-    
-    }
 
 ?>
 
@@ -79,89 +45,111 @@
     <?php
 
     if(isset($_POST["btn_login"])){
+        // BOTÓN DE LOGIN
 
-        $existe_gmail = $usuario->validarGmail($_POST["gmail"]);
+        // Validar gmail (si existe o no)
+        $existe_gmail = mysqli_num_rows(mysqli_query($con, "SELECT gmail FROM t_usuarios WHERE gmail = '$_POST[gmail]'"));
 
-        if($existe_gmail == false){ $_SESSION["msj"] = "No existe una cuenta con esa dirección de correo electrónico"; }else{
+        if($existe_gmail == 0){ $_SESSION["msj"] = "No existe una cuenta con esa dirección de correo electrónico"; }else{
 
-            $id_usuario = $usuario->validarClave($_POST["gmail"], $_POST["clave"]);
+            // Validar contraseña (si coincide con el gmail)
+            $usuario = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM t_usuarios WHERE gmail = '$_POST[gmail]' AND contrasena = '$_POST[clave]'"));
 
-            if($id_usuario == false){ $_SESSION["msj"] = "Contraseña incorrecta"; }else{
+            if(empty($usuario)){ $_SESSION["msj"] = "Contraseña incorrecta"; }else{
+                
+                unset($_SESSION["msj"]); // Borro cualquier mensaje que pueda haber
 
-                $id_usuario = $id_usuario;
+                switch($usuario["id_rol"]){
 
-                $caso = $usuario->definirRol($id_usuario);
+                    case 15:
 
-                switch ($caso) {
-                    case $caso[0] == 1:
+                        $_SESSION["id_usuario"] = $usuario["id_usuario"];
 
-                        // Administrador
+                        $_SESSION["id_rol"] = $usuario["id_rol"];
 
-                        $_SESSION["id_rol"] = $caso[1];
+                        $_SESSION["id_tecnico"] = $usuario["id_usuario"];
 
-                        $_SESSION["id_usuario"] = $caso[2];
-
-                        $_SESSION["id_tecnico"] = $caso[2];
-
-                        $_SESSION["id_empresa"] = $caso[3];
+                        $_SESSION["id_empresa"] = mysqli_fetch_array(mysqli_query($con, "SELECT id_empresa FROM t_empresas WHERE id_usuario = '$usuario[id_usuario]'"))["id_empresa"];
 
                         header("Location: app/vista/adm.php");
 
                         break;
 
-                    case $caso[0] == 2:
+                    case 14:
 
-                        // Técnico
+                        // Validar registro completo
+                        $tecnico = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM t_tecnicos WHERE id_tecnico = '$usuario[id_usuario]'"));
 
-                        $_SESSION["id_rol"] = $caso[1];
+                        if(empty($tecnico)){
 
-                        $_SESSION["id_usuario"] = $caso[2];
+                            // El registro del técnico está incompleto
+                            $_SESSION["msj"] = "Para continuar, complete el registro";
 
-                        $_SESSION["id_tecnico"] = $caso[2];
+                            $_SESSION["id_usuario"] = $usuario["id_usuario"];
 
-                        // ID EMPRESA VA COMO FALSE
-                        $_SESSION["id_empresa"] = false;
+                            $_SESSION["id_rol"] = $usuario["id_rol"];
 
-                        header("Location: app/vista/tec.php");
+                            header("Location: registro.php");
+
+                        }else{
+
+                            // El tecnico se logueó correctamente
+                            $_SESSION["id_usuario"] = $usuario["id_usuario"];
+
+                            $_SESSION["id_rol"] = $usuario["id_rol"];
+
+                            $_SESSION["id_tecnico"] = $tecnico["id_tecnico"];
+
+                            $_SESSION["id_empresa"] = false;
+
+                            header("Location: app/vista/tec.php");
+
+                        }
+
+                        break;
+
+                    case 13:
+
+                        // Validar registro completo
+
+                        $empresa = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM t_empresas WHERE id_usuario = '$usuario[id_usuario]'"));
+
+                        if(empty($empresa)){
+
+                            // El registro de la empresa está incompleto
+                            $_SESSION["msj"] = "Para continuar, complete el registro";
+
+                            $_SESSION["id_usuario"] = $usuario["id_usuario"];
+
+                            $_SESSION["id_rol"] = $usuario["id_rol"];
+
+                            header("Location: registro.php");
+
+                        }else{
+
+                            // Se logueó correctamente
+                            $_SESSION["id_usuario"] = $usuario["id_usuario"];
+
+                            $_SESSION["id_rol"] = $usuario["id_rol"];
+
+                            $_SESSION["id_empresa"] = $empresa["id_empresa"];
+
+                            $_SESSION["id_tecnico"] = false;
+
+                            header("Location: app/vista/emp.php");
+
+                        }
 
                         break;
 
-                    case $caso[0] == 3:
-
-                        // Empresa
-
-                        $_SESSION["id_rol"] = $caso[1];
-
-                        $_SESSION["id_usuario"] = $caso[2];
-
-                        $_SESSION["id_empresa"] = $caso[3];
-
-                        // ID TÉCNICO VA VACÍO CON FALSE
-                        $_SESSION["id_tecnico"] = false;
-
-                        header("Location: app/vista/emp.php");
-
-                        break;
-
-                    case $caso[0] == 4:
-
-                        // Registro incompleto
-
-                        $_SESSION["id_usuario"] = $caso[2];
-
-                        $_SESSION["id_rol"] = $caso[1];
-                        
-                        header("Location: registro.php");
-
-                        break;
-                    
                     default:
 
-                        echo "Algo salió mal";
+                        $_SESSION["msj"] = "Lo sentimos, algo salió mal :(";
 
                         break;
+
                 }
-    
+
             }
 
         }

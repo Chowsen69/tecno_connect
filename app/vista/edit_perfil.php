@@ -2,18 +2,10 @@
 
 require_once "componentes/head.php";
 
-// ACCIONES (CUANDO SE APRETA UN BOTÓN)
-
 // ACCIONES DE TÉCNICO
 if(isset($_POST["btn_servicio"])){
 
-    require_once "../controlador/C_Servicio.php";
-
-    $obj_servicio = new C_Servicio();
-
-    $obj_servicio->guardarServicios($_SESSION["id_usuario"], $_POST["perfil_tec"], $_POST["ubicacion"]);
-
-    print_r($_POST);
+    // Codigo
 
 }
 
@@ -34,7 +26,7 @@ if(isset($_POST["btn_servicio"])){
             <form action="edit_perfil.php" method="POST">
 
                 <h2>Tus servicios</h2>
-<br>
+
                 <label for="perfil_tec">
 
                     <span>Perfil técnico</span>
@@ -42,7 +34,7 @@ if(isset($_POST["btn_servicio"])){
                     <textarea name="perfil_tec" id="perfil_tec" rows="5" cols="50"></textarea>
 
                 </label>
-<br><br><br>
+
                 <div>
 
                     <span>Ubicación</span>
@@ -64,14 +56,8 @@ if(isset($_POST["btn_servicio"])){
                     </div>
 
                 </div>
-            <br>
-                <?php
                 
-                require_once "C://xampp/htdocs/tecno_connect/app/controlador/C_Servicio.php";
-
-                $obj_servicio = new C_Servicio();
-
-                $obj_servicio->listaSubHabilidades();
+                <?php
 
                 ?>
 
