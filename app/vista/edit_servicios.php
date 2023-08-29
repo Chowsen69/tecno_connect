@@ -18,7 +18,7 @@
 
     if(isset($_POST["btn_servicios"])){
 
-        If para comprobar si el técnico ya tiene un servicio cargado
+        // If para comprobar si el técnico ya tiene un servicio cargado
         if(mysqli_num_rows(mysqli_query($con, "SELECT id_servicio FROM t_servicios WHERE id_servicio = '$_SESSION[id_tecnico]'")) == 0){
 
             $insert = "INSERT INTO t_servicios(id_servicio, perfil_tec, id_ubicacion) VALUES('$_SESSION[id_tecnico]', '$_POST[perfil_tec]', '$_POST[ubicacion]')";
@@ -31,7 +31,7 @@
 
         }else{
 
-            $update = "UPDATE t_servicios SET perfil_tec = '$_POST[perfil_tec]', id_ubicacion = '$_POST[ubicacion]'";
+            $update = "UPDATE t_servicios SET perfil_tec = '$_POST[perfil_tec]', id_ubicacion = '$_POST[ubicacion]' WHERE id_servicio = '$_SESSION[id_tecnico]'";
 
             if(mysqli_query($con, $update)){
 
@@ -52,12 +52,51 @@
 
                 if(mysqli_num_rows($existe) == false){
 
-                    mysqli_query($con, "INSERT INTO t_r_sub_habilidad_servicio(id_servicio, id_sub_habilidad) VALUES('$_SESSION[id_tecnico]', '$sub_habilidad[id_sub_habilidad]')")
+                    mysqli_query($con, "INSERT INTO t_r_sub_habilidad_servicio(id_servicio, id_sub_habilidad) VALUES('$_SESSION[id_tecnico]', '$sub_habilidad[id_sub_habilidad]')");
 
                 }
 
             }
+ 
+        }
 
+        // CURRÍCULUM
+        $url = $_SERVER["DOCUMENT_ROOT"] ."/tecno_connect/publico/usuarios/". $_SESSION["id_tecnico"] ."/";
+
+        if(!file_exists($url)){
+
+            mkdir($url);
+    
+        }
+    
+        if(!file_exists($url . "avatar/")){
+    
+            mkdir($url . "avatar/");
+        
+        }
+    
+        if(!file_exists($url . "portada/")){
+    
+            mkdir($url . "portada/");
+            
+        }
+
+        if(!file_exists($url . "curriculum/")){
+    
+            mkdir($url . "curriculum/");
+            
+        }
+
+        if($_FILES["curriculum"]["name"] == ""){
+
+            // Si no seleccionó ninguna foto de perfil
+    
+        }else{
+    
+            $curriculum = uniqid() . $_FILES["curriculum"]["name"];
+    
+            move_uploaded_file($_FILES["curriculum"]["tmp_name"], $url . "curriculum/" . $curriculum);
+    
         }
 
         header("Location: perfil.php?id_usuario=". $_SESSION["id_usuario"] ."&id_rol=". $_SESSION["id_rol"]);
@@ -68,7 +107,7 @@
 
     <h1>Edita tus servicios</h1>
 
-    <form action="edit_servicios.php" method="POST">
+    <form action="edit_servicios.php" method="POST" enctype="multipart/form-data">
 
         <label for="perfil_tec">
 
@@ -147,6 +186,14 @@
         }
 
         ?>
+
+        <label for="curriculum">
+
+            <span>Currículum</span>
+
+            <input type="file" name="curriculum" id="curriculum">
+
+        </label>
 
         <button type="submit" name="btn_servicios" id="btn_servicios">Guardar cambios</button>
 

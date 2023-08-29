@@ -57,4 +57,6 @@ if(empty($_SESSION["id_empresa"])){
 
     <?php require_once ("../controlador/seleccionar_propuestas.php"); ?>
 
+    <?php require_once ("../controlador/seleccionar_tecnicos.php"); ?>
+
 <?php require_once "componentes/footer.php"; ?>

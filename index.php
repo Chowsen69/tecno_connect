@@ -2,34 +2,59 @@
 
 session_start();
 
+// SI ESTÁ LOGUADO, REDIRECCIONAR AL INICIO.PHP, O SI NO ESTÁ VALIDADO MOSTRAR MSJ CORRESPONDIENTE
 if(isset($_SESSION["id_rol"])){
 
-    switch ($_SESSION["id_rol"]) {
+    switch ($_SESSION["id_validacion"]){
 
-        case 15:
+        case 1:
 
-            header("Location: app/vista/adm.php");
+            echo "Tu cuenta está en proceso de validación";
 
             break;
 
-        case 14:
-        
-            header("Location: app/vista/tec.php");
-        
+        case 2:
+
+            echo "Tu cuenta fué rechazada, contacta a 'tecno.connect.oficial@gmail.com' en caso de cualquier reclamo";
+
             break;
 
-        case 13:
+        case 3:
+
+            switch ($_SESSION["id_rol"]) {
         
-            header("Location: app/vista/emp.php");
+                case 15:
         
+                    header("Location: app/vista/adm.php");
+        
+                    break;
+        
+                case 14:
+                
+                    header("Location: app/vista/tec.php");
+                
+                    break;
+        
+                case 13:
+                
+                    header("Location: app/vista/emp.php");
+                
+                    break;
+                
+                default:
+        
+                    # code...
+        
+                    break;
+                  
+                }
+
             break;
-        
+
         default:
 
-            # code...
+            echo "Algo salió mal durante la validación de tu cuenta";
 
-            break;
-          
     }
 
 }
@@ -80,49 +105,49 @@ if(isset($_SESSION["id_rol"])){
 
 
     <section class="wave-contenedor website">
-        <img src="img/ilustracion1.svg" alt="">
+        <img src="publico/img/our_work/ilustracion1.svg" alt="">
         <div class="contenedor-textos-main">
-            <h2 class="titulo left">Title of section</h2>
+            <h2 class="titulo left">¿Qué es Tecno Connect?</h2>
             <p class="parrafo">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt enim reiciendis
                 molestias nam tempore. Ullam hic accusantium eligendi ipsam corrupti!</p>
-            <a href="" class="cta">Learn more</a>
+            <a href="" class="cta">Leer más</a>
         </div>
     </section>
 
     <section class="info">
         <div class="contenedor">
-            <h2 class="titulo left">Juntos podemos apoyar</h2>
+            <h2 class="titulo left">Juntos podemos mejorar</h2>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
         </div>
     </section>
 
     <section class="cards contenedor">
-        <h2 class="titulo">Our services</h2>
+        <h2 class="titulo">Nuestros servicios</h2>
         <div class="content-cards">
             <article class="card">
                 <i class="far fa-clone"></i>
-                <h3>Title Card</h3>
+                <h3>Título de tarjeta</h3>
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-                <a href="" class="cta">Learn more</a>
+                <a href="" class="cta">Leer más</a>
             </article>
             <article class="card">
                 <i class="fas fa-database"></i>
-                <h3>Title Card</h3>
+                <h3>Título de tarjeta</h3>
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-                <a href="" class="cta">Learn more</a>
+                <a href="" class="cta">Leer más</a>
             </article>
             <article class="card">
                 <i class="far fa-object-group"></i>
-                <h3>Title Card</h3>
+                <h3>Título de tarjeta</h3>
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-                <a href="" class="cta">Learn more</a>
+                <a href="" class="cta">Leer más</a>
             </article>
         </div>
     </section>
 
     <section class="galeria">
         <div class="contenedor">
-            <h2 class="titulo">Our work</h2>
+            <h2 class="titulo">Nuestro trabajo / Tecnicas o Empresas que trabajan con nosotros / Nuestro equipo</h2>
             <article class="galeria-cont">
                 <img src="publico/img/our_work/uno.jpg" alt="">
                 <img src="publico/img/our_work/dos.jpg" alt="">
@@ -138,11 +163,11 @@ if(isset($_SESSION["id_rol"])){
 
         <div class="contenedor last-section">
             <div class="contenedor-textos-main">
-                <h2 class="titulo left">Title of section</h2>
+                <h2 class="titulo left">¿Cuántas personas hay registradas?</h2>
                 <p class="parrafo">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum reprehenderit nostrum expedita quasi odio architecto laudantium sunt nemo dicta atque?</p>
-                <a href="" class="cta">Learn more</a>
+                <a href="" class="cta">Leer más</a>
             </div>
-            <img src="img/ilustracion.svg" alt="">
+            <img src="publico/img/our_work/ilustracion.svg" alt="">
         </div>
         
         <div class="svg-wave" style="height: 150px; overflow: hidden;"><svg viewBox="0 0 500 150" preserveAspectRatio="none"
@@ -154,7 +179,7 @@ if(isset($_SESSION["id_rol"])){
 
     <footer id="contacto">
         <div class="contenedor">
-            <h2 class="titulo">Contact us</h2>
+            <h2 class="titulo">Contáctanos</h2>
             <form action="" class="form">
                 <input class="input"  type="text" name="" id="" placeholder="Nombre">
                 <input class="input"  type="email" name="" id="" placeholder="Email">
