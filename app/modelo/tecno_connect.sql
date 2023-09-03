@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-08-2023 a las 20:03:17
+-- Tiempo de generación: 29-08-2023 a las 21:22:17
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -52,7 +52,9 @@ INSERT INTO `t_empresas` (`id_empresa`, `id_usuario`, `nombre_empresa`, `cuit`, 
 (11, 26, 'Capcom', 2147483647, 'Gregorio Laferrer', '', '', 1, 4, '2023-08-21'),
 (12, 27, 'Twitter', 2147483647, 'Virrey del Pino', 'https://twitter.com', 'Red social', 1, 4, '2023-08-21'),
 (13, 28, 'Empresa ejemplo', 123455666, 'Gonzalez Catan', '', 'Tecnología', 1, 4, '2023-08-23'),
-(14, 32, 'Empresa de estafas', 2147483647, 'Anonimo', '', 'Estafas', 3, 1, '2023-08-23');
+(14, 32, 'Empresa de estafas', 2147483647, 'Anonimo', '', 'Estafas', 3, 1, '2023-08-23'),
+(15, 33, 'Otra empresa de ejemplo', 2147483647, 'González Catán', 'https://empresa_falsa.com.ar', 'Estafas', 2, 4, '2023-08-29'),
+(16, 39, 'Nombre de la empresa', 1234566787, 'González Catán', '', 'Alimentos', 1, 4, '2023-08-29');
 
 -- --------------------------------------------------------
 
@@ -128,6 +130,7 @@ INSERT INTO `t_postulantes` (`id_postulacion`, `id_tecnico`, `id_propuesta`) VAL
 (60, 23, 32),
 (55, 25, 28),
 (54, 25, 29),
+(65, 25, 30),
 (63, 29, 33);
 
 -- --------------------------------------------------------
@@ -202,25 +205,27 @@ INSERT INTO `t_roles` (`id_rol`, `rol`) VALUES
 CREATE TABLE `t_r_sub_habilidad_servicio` (
   `id_relacion` int(11) NOT NULL,
   `id_servicio` int(11) NOT NULL,
-  `id_sub_habilidad` int(11) NOT NULL
+  `id_sub_habilidad` int(11) DEFAULT NULL,
+  `personalizada` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Volcado de datos para la tabla `t_r_sub_habilidad_servicio`
 --
 
-INSERT INTO `t_r_sub_habilidad_servicio` (`id_relacion`, `id_servicio`, `id_sub_habilidad`) VALUES
-(1, 20, 3),
-(4, 20, 5),
-(5, 20, 5),
-(2, 20, 6),
-(3, 20, 7),
-(8, 23, 3),
-(9, 23, 4),
-(10, 23, 5),
-(11, 23, 6),
-(12, 23, 7),
-(13, 23, 9);
+INSERT INTO `t_r_sub_habilidad_servicio` (`id_relacion`, `id_servicio`, `id_sub_habilidad`, `personalizada`) VALUES
+(2, 20, 6, NULL),
+(3, 20, 7, NULL),
+(4, 20, 5, NULL),
+(5, 20, 5, NULL),
+(8, 23, 3, NULL),
+(9, 23, 4, NULL),
+(10, 23, 5, NULL),
+(14, 23, 1, NULL),
+(15, 23, 2, NULL),
+(16, 23, 8, NULL),
+(18, 23, 9, NULL),
+(22, 20, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -231,6 +236,7 @@ INSERT INTO `t_r_sub_habilidad_servicio` (`id_relacion`, `id_servicio`, `id_sub_
 CREATE TABLE `t_servicios` (
   `id_servicio` int(11) NOT NULL,
   `perfil_tec` varchar(500) NOT NULL,
+  `curriculum` varchar(100) DEFAULT NULL,
   `id_ubicacion` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -238,9 +244,9 @@ CREATE TABLE `t_servicios` (
 -- Volcado de datos para la tabla `t_servicios`
 --
 
-INSERT INTO `t_servicios` (`id_servicio`, `perfil_tec`, `id_ubicacion`) VALUES
-(20, 'ASDASDASDASD', 3),
-(23, 'ASDASDASDASD', 3);
+INSERT INTO `t_servicios` (`id_servicio`, `perfil_tec`, `curriculum`, `id_ubicacion`) VALUES
+(20, 'Buenooo piolaaaa', 'ej1.pdf', 1),
+(23, 'Programo desde los 8 años y tengo experienca en Ajax y otras cosas muy complejas que pocas personas entienden :)', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -398,6 +404,7 @@ CREATE TABLE `t_usuarios` (
   `contrasena` varchar(255) NOT NULL,
   `avatar` varchar(500) NOT NULL,
   `portada` varchar(500) NOT NULL,
+  `id_validacion` int(11) DEFAULT NULL,
   `fecha_creacion` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -405,23 +412,44 @@ CREATE TABLE `t_usuarios` (
 -- Volcado de datos para la tabla `t_usuarios`
 --
 
-INSERT INTO `t_usuarios` (`id_usuario`, `id_rol`, `gmail`, `contrasena`, `avatar`, `portada`, `fecha_creacion`) VALUES
-(18, 15, 'lele@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-17'),
-(19, 13, 'covidelpi@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-17'),
-(20, 14, 'ramiro@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-17'),
-(21, 14, 'mara@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-17'),
-(22, 13, 'cudi@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-17'),
-(23, 14, 'ramon@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-18'),
-(24, 13, 'serenisima@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-18'),
-(25, 14, 'santiago.garcia@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-18'),
-(26, 13, 'capcom@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-21'),
-(27, 13, 'twitter@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-21'),
-(28, 13, 'empresa_ejemplo@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-23'),
-(29, 14, 'tecnico_ejemplo@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-23'),
-(30, 14, 'tecnico@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-23'),
-(31, 14, 'tecnico2@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-23'),
-(32, 13, 'empresa@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-23'),
-(33, 13, 'empresa2@gmail.com', '123', '../../publico/img/avatar/por_defecto.png', '../../publico/img/portada/por_defecto.png', '2023-08-23');
+INSERT INTO `t_usuarios` (`id_usuario`, `id_rol`, `gmail`, `contrasena`, `avatar`, `portada`, `id_validacion`, `fecha_creacion`) VALUES
+(18, 15, 'lele@gmail.com', '123', '64edc6a0b6820pato.jpeg', '64edc6a0b6ad6dlow vs b-art.webp', 3, '2023-08-17'),
+(19, 13, 'covidelpi@gmail.com', '123', '64edc5bf9462d64e03c860e621fantasmita_cool.jpg', '64edc5bf9492bkrnfx.jpg', 3, '2023-08-17'),
+(20, 14, 'ramiro@gmail.com', '123', '64edc6fcb2ee3avatar.png', '64edc6fcb313fportada.png', 3, '2023-08-17'),
+(21, 14, 'mara@gmail.com', '123', '64edc715ba7b1avatar.png', '64edc715ba9f6portada.png', 2, '2023-08-17'),
+(22, 13, 'cudi@gmail.com', '123', '64edc73165956avatar.png', '64edc731661cbportada.png', 3, '2023-08-17'),
+(23, 14, 'ramon@gmail.com', '123', '64edc4758c07064e0387d33023chica_anime.jpg', '64edc4758c36ehip hop.jpg', 3, '2023-08-18'),
+(24, 13, 'serenisima@gmail.com', '123', '64edc7803328davatar.png', '64edc780334f4portada.png', 3, '2023-08-18'),
+(25, 14, 'santiago.garcia@gmail.com', '123', '64edc756e41e5avatar.png', '64edc756e4429portada.png', 3, '2023-08-18'),
+(26, 13, 'capcom@gmail.com', '123', '64edc81925206avatar.png', '64edc81925456portada.png', 3, '2023-08-21'),
+(27, 13, 'twitter@gmail.com', '123', '64edc830db371avatar.png', '64edc830db63dportada.png', 3, '2023-08-21'),
+(28, 13, 'empresa_ejemplo@gmail.com', '123', '64edc84c7cc48avatar.png', '64edc84c7cec0portada.png', 3, '2023-08-23'),
+(29, 14, 'tecnico_ejemplo@gmail.com', '123', '64edc869299d6avatar.png', '64edc86929fa3portada.png', 3, '2023-08-23'),
+(30, 14, 'tecnico@gmail.com', '123', '64edc7df4630davatar.png', '64edc7df46573portada.png', 3, '2023-08-23'),
+(31, 14, 'tecnico2@gmail.com', '123', '64edc7fc194a5avatar.png', '64edc7fc196dcportada.png', 3, '2023-08-23'),
+(32, 13, 'empresa@gmail.com', '123', '64edc7a0e2715avatar.png', '64edc7a0e29a1portada.png', 3, '2023-08-23'),
+(33, 13, 'empresa2@gmail.com', '123', '64edc98854b00avatar.png', '64edc98854d2cportada.png', 3, '2023-08-23'),
+(39, 13, 'empresa_ejemplo2@gmail.com', '123', '64ede26a9c4f8pato.jpeg', '64ede26a9cf69hip hop.jpg', 3, '2023-08-29');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `t_validaciones`
+--
+
+CREATE TABLE `t_validaciones` (
+  `id_validacion` int(11) NOT NULL,
+  `validacion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `t_validaciones`
+--
+
+INSERT INTO `t_validaciones` (`id_validacion`, `validacion`) VALUES
+(1, 'En proceso'),
+(2, 'Rechazado'),
+(3, 'Aceptado');
 
 --
 -- Índices para tablas volcadas
@@ -536,7 +564,14 @@ ALTER TABLE `t_ubicaciones`
 --
 ALTER TABLE `t_usuarios`
   ADD PRIMARY KEY (`id_usuario`),
-  ADD KEY `id_rol` (`id_rol`);
+  ADD KEY `id_rol` (`id_rol`),
+  ADD KEY `id_validacion` (`id_validacion`);
+
+--
+-- Indices de la tabla `t_validaciones`
+--
+ALTER TABLE `t_validaciones`
+  ADD PRIMARY KEY (`id_validacion`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -546,7 +581,7 @@ ALTER TABLE `t_usuarios`
 -- AUTO_INCREMENT de la tabla `t_empresas`
 --
 ALTER TABLE `t_empresas`
-  MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `t_especialidades`
@@ -564,7 +599,7 @@ ALTER TABLE `t_habilidades`
 -- AUTO_INCREMENT de la tabla `t_postulantes`
 --
 ALTER TABLE `t_postulantes`
-  MODIFY `id_postulacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id_postulacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT de la tabla `t_propuestas`
@@ -588,7 +623,7 @@ ALTER TABLE `t_roles`
 -- AUTO_INCREMENT de la tabla `t_r_sub_habilidad_servicio`
 --
 ALTER TABLE `t_r_sub_habilidad_servicio`
-  MODIFY `id_relacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_relacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `t_sub_habilidades`
@@ -624,7 +659,13 @@ ALTER TABLE `t_ubicaciones`
 -- AUTO_INCREMENT de la tabla `t_usuarios`
 --
 ALTER TABLE `t_usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- AUTO_INCREMENT de la tabla `t_validaciones`
+--
+ALTER TABLE `t_validaciones`
+  MODIFY `id_validacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
@@ -689,6 +730,7 @@ ALTER TABLE `t_tecnicos`
 -- Filtros para la tabla `t_usuarios`
 --
 ALTER TABLE `t_usuarios`
+  ADD CONSTRAINT `Para corroborar si el usuario pasó la validación o no` FOREIGN KEY (`id_validacion`) REFERENCES `t_validaciones` (`id_validacion`),
   ADD CONSTRAINT `rol que cumple el usuario` FOREIGN KEY (`id_rol`) REFERENCES `t_roles` (`id_rol`);
 COMMIT;
 

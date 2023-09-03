@@ -31,7 +31,7 @@ if(mysqli_num_rows($res) > 0){
 
                 if(!empty($servicio["curriculum"])){
 
-                    ?><a href="curriculum.php?id_servicio=<?=$servicio["id_servicio"]?>&curriculum=<?=$servicio["curriculum"]?>">Ver currículum</a><?php
+                    ?><a href="curriculum.php?id_servicio=<?=$servicio["id_servicio"]?>&curriculum=<?=$servicio["curriculum"]?>" target="_blank">Ver currículum</a><?php
 
                 }
 

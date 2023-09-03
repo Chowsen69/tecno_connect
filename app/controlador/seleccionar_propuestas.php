@@ -72,6 +72,16 @@
 
                                     <a href="perfil.php?id_usuario=<?=$postulante["id_usuario"]?>&id_rol=<?=$postulante["id_rol"]?>"><?= $postulante["nombre"] . " " . $postulante["apellido"]?></a>
 
+                                    <?php
+                                    // Ver currículum
+                                    if(mysqli_num_rows(mysqli_query($con, "SELECT id_servicio FROM t_servicios WHERE id_servicio = '$postulante[id_tecnico]'")) > 0){
+                                        $curriculum = mysqli_fetch_array(mysqli_query($con, "SELECT curriculum FROM t_servicios WHERE id_servicio = '$postulante[id_tecnico]'"))["curriculum"];
+                                        if(!empty($curriculum)){
+                                            ?><a href="curriculum.php?id_servicio=<?=$postulante["id_tecnico"]?>&curriculum=<?=$curriculum?>" target="_blank">Ver currículum</a><?php
+                                        }
+                                    }
+                                    ?>
+
                                 </li>
                                 
                                 <?php

@@ -1,0 +1,6 @@
+En esta carpeta se almacenarán los archivos que tengan que ver con los formularios.
+Más concretamente con los formularios para editar el perfil, ya sea del técnico, de
+la empresa, o lo que sea. Sé que a lo mejor no es la forma más óptima de hacerlo,
+pero si no lo hago así, el archivo ../edit_perfil.php sería muchísimo código y se me
+haría muuuuuy engorroso. Por ende opté por colocar todos esos formularios acá, en 
+esta carpeta :)

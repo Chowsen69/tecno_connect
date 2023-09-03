@@ -30,6 +30,7 @@ if(isset($_POST["btn_usuario"])){
     if($_FILES["avatar"]["name"] == ""){
 
         // Si no seleccionó ninguna foto de perfil
+        $avatar = mysqli_fetch_array(mysqli_query($con, "SELECT avatar FROM t_usuarios WHERE id_usuario = '$_SESSION[id_usuario]'"))["avatar"];
 
     }else{
 
@@ -41,7 +42,8 @@ if(isset($_POST["btn_usuario"])){
 
     if($_FILES["portada"]["name"] == ""){
 
-        // Si no seleccionó ninguna foto de perfil
+        // Si no seleccionó ninguna foto de portada
+        $portada = mysqli_fetch_array(mysqli_query($con, "SELECT portada FROM t_usuarios WHERE id_usuario = '$_SESSION[id_usuario]'"))["portada"];
 
     }else{
 
@@ -59,19 +61,12 @@ if(isset($_POST["btn_usuario"])){
 
 }
 
-// ACCIONES DE TÉCNICO
-if(isset($_POST["btn_servicio"])){
-
-    // Codigo
-
-}
-
 ?>
-
-    <h1>Editar perfil</h1>
 
     <a href="perfil.php?id_usuario=<?= $_SESSION["id_usuario"] ?>&id_rol=<?= $_SESSION["id_rol"] ?>">Volver</a>
 
+    <h1>Editar perfil</h1>
+    
     <form action="edit_perfil.php" method="POST" enctype="multipart/form-data">
 
         <label for="avatar">
@@ -101,9 +96,7 @@ if(isset($_POST["btn_servicio"])){
         case 14:
             // técnico
 
-            ?>
-            <a href='edit_servicios.php'>Editar servicios</a>
-            <?php
+            include("editar/servicios.php");
 
         break;
 

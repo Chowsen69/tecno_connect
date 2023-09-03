@@ -61,6 +61,12 @@
 
                 <?php
 
+                if(!empty($servicio["curriculum"])){
+
+                    ?><a href="curriculum.php?id_servicio=<?=$servicio["id_servicio"]?>&curriculum=<?=$servicio["curriculum"]?>">Ver currículum</a><?php
+
+                }
+
                 $sub_habilidades = mysqli_query($con, "SELECT * FROM t_r_sub_habilidad_servicio INNER JOIN t_sub_habilidades ON t_r_sub_habilidad_servicio.id_sub_habilidad = t_sub_habilidades.id_sub_habilidad WHERE id_servicio = '$servicio[id_servicio]'");
 
                 if(mysqli_num_rows($sub_habilidades) > 0){
@@ -92,7 +98,7 @@
 
                 ?><h2>No tiene servicios</h2><?php
 
-                if($tecnico["id_tecnico"] == $_SESSION["id_usuario"]){ ?><p>No tienes servicios! <a href="edit_servicios.php">Añade tus servicios</a> para que las empresas vean de qué eres capaz ;)</p><?php }
+                if($tecnico["id_tecnico"] == $_SESSION["id_usuario"]){ ?><p>No tienes servicios! <a href="edit_perfil.php">Añade tus servicios</a> para que las empresas vean de qué eres capaz ;)</p><?php }
 
             }
 
