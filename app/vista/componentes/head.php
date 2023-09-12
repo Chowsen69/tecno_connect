@@ -15,7 +15,11 @@
 <body>
 
     <?php
-    define("URL_USUARIO", "../../publico/usuarios/");
+    define("AVATAR", "../../publico/img/avatar/");
+
+    define("PORTADA", "../../publico/img/portada/");
+
+    define("CURRICULUM", "../../publico/curriculum/");
 
     require_once "../modelo/conexion.php";
     

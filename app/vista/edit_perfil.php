@@ -6,25 +6,6 @@ require_once "componentes/head.php";
 if(isset($_POST["btn_usuario"])){
 
     // CREO LA CARPETA DEL USUARIO CORRESPONDIENTE EN tecno_connect/publico/usuarios
-    $url = $_SERVER["DOCUMENT_ROOT"] . "/tecno_connect/publico/usuarios/". $_SESSION["id_usuario"] . "/";
-
-    if(!file_exists($url)){
-
-        mkdir($url);
-
-    }
-
-    if(!file_exists($url . "avatar/")){
-
-        mkdir($url . "avatar/");
-    
-    }
-
-    if(!file_exists($url . "portada/")){
-
-        mkdir($url . "portada/");
-        
-    }
 
     // Foto de perfil
     if($_FILES["avatar"]["name"] == ""){
@@ -34,9 +15,13 @@ if(isset($_POST["btn_usuario"])){
 
     }else{
 
-        $avatar = uniqid() . $_FILES["avatar"]["name"];
+        $avatar = "usuario". $_SESSION["id_usuario"] .".". pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION);
 
-        move_uploaded_file($_FILES["avatar"]["tmp_name"], $url . "avatar/" . $avatar);
+        if(file_exists(AVATAR . $avatar)){
+            unlink(AVATAR . $avatar);
+        }
+
+        move_uploaded_file($_FILES["avatar"]["tmp_name"], AVATAR . $avatar);
 
     }
 
@@ -47,9 +32,13 @@ if(isset($_POST["btn_usuario"])){
 
     }else{
 
-        $portada = uniqid() . $_FILES["portada"]["name"];
+        $portada = "usuario". $_SESSION["id_usuario"] .".". pathinfo($_FILES["portada"]["name"], PATHINFO_EXTENSION);
 
-        move_uploaded_file($_FILES["portada"]["tmp_name"], $url . "portada/" . $portada);
+        if(file_exists(PORTADA . $portada)){
+            unlink(PORTADA . $portada);
+        }
+
+        move_uploaded_file($_FILES["portada"]["tmp_name"], PORTADA . $portada);
 
     }
 

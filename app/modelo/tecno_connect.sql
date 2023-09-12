@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-08-2023 a las 21:22:17
+-- Tiempo de generación: 07-09-2023 a las 04:29:34
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -45,16 +45,7 @@ CREATE TABLE `t_empresas` (
 --
 
 INSERT INTO `t_empresas` (`id_empresa`, `id_usuario`, `nombre_empresa`, `cuit`, `localidad`, `sitio_web`, `sector`, `id_tipo`, `id_tamano`, `fecha_creacion`) VALUES
-(7, 19, 'Covidelpi', 2147483647, 'Virrey del Pino', '', 'Redes', 1, 3, '2023-08-17'),
-(8, 22, 'CUDI', 2147483647, 'Gonzalez Catán', 'https://www.cudi.ar', 'Educación', 3, 3, '2023-08-18'),
-(9, 18, 'BeatCore', 154845210, 'Rafael Castillo', '', 'Venta de servicios', 1, 1, '2023-08-18'),
-(10, 24, 'La serenísima', 2147483647, 'El palomar', 'https://www.laserenisima.com.ar', 'Elaboración y comercialización de productos alimenticios', 1, 4, '2023-08-18'),
-(11, 26, 'Capcom', 2147483647, 'Gregorio Laferrer', '', '', 1, 4, '2023-08-21'),
-(12, 27, 'Twitter', 2147483647, 'Virrey del Pino', 'https://twitter.com', 'Red social', 1, 4, '2023-08-21'),
-(13, 28, 'Empresa ejemplo', 123455666, 'Gonzalez Catan', '', 'Tecnología', 1, 4, '2023-08-23'),
-(14, 32, 'Empresa de estafas', 2147483647, 'Anonimo', '', 'Estafas', 3, 1, '2023-08-23'),
-(15, 33, 'Otra empresa de ejemplo', 2147483647, 'González Catán', 'https://empresa_falsa.com.ar', 'Estafas', 2, 4, '2023-08-29'),
-(16, 39, 'Nombre de la empresa', 1234566787, 'González Catán', '', 'Alimentos', 1, 4, '2023-08-29');
+(17, 40, 'BeatCore', 123456789, 'Rafael Castillo', 'https://dsdesarrollo.com.ar/beatcore', 'Red social', 1, 1, '2023-09-06');
 
 -- --------------------------------------------------------
 
@@ -94,7 +85,7 @@ CREATE TABLE `t_habilidades` (
 INSERT INTO `t_habilidades` (`id_habilidad`, `habilidad`) VALUES
 (1, 'Programación'),
 (2, 'Diseño'),
-(4, 'Habilidad de ejemplo');
+(5, 'Otro');
 
 -- --------------------------------------------------------
 
@@ -107,31 +98,6 @@ CREATE TABLE `t_postulantes` (
   `id_tecnico` int(11) NOT NULL,
   `id_propuesta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Volcado de datos para la tabla `t_postulantes`
---
-
-INSERT INTO `t_postulantes` (`id_postulacion`, `id_tecnico`, `id_propuesta`) VALUES
-(49, 18, 20),
-(41, 18, 21),
-(59, 18, 28),
-(58, 18, 30),
-(64, 18, 34),
-(57, 20, 29),
-(53, 21, 28),
-(52, 21, 29),
-(51, 21, 31),
-(37, 23, 21),
-(62, 23, 28),
-(45, 23, 29),
-(46, 23, 30),
-(61, 23, 31),
-(60, 23, 32),
-(55, 25, 28),
-(54, 25, 29),
-(65, 25, 30),
-(63, 29, 33);
 
 -- --------------------------------------------------------
 
@@ -148,21 +114,6 @@ CREATE TABLE `t_propuestas` (
   `limite` date DEFAULT NULL,
   `fecha_publicacion` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Volcado de datos para la tabla `t_propuestas`
---
-
-INSERT INTO `t_propuestas` (`id_propuesta`, `id_empresa`, `titulo`, `descr`, `pago_min`, `limite`, `fecha_publicacion`) VALUES
-(20, 7, 'Primer propuesta', 'Estoy generando la primer propuesta!', 'Negociable', '2023-06-20', '2023-08-18'),
-(21, 7, 'Segunda propuesta', 'Estoy generando una segunda propuesta', '50000', '2000-02-20', '2023-08-18'),
-(28, 9, 'Propuesta con cuenta de administrador', 'Estoy viendo si puedo generar propuestas nuevas con la vista de administrador', 'Negociable', '2025-06-20', '2023-08-18'),
-(29, 9, 'Web Developer', 'Estoy desarrollando una red social para beatboxers, y necesito a alguien para que le de un buen diseño a la plataforma', 'Negociable', '2023-09-20', '2023-08-18'),
-(30, 8, 'Sistema para tomar asistencia', 'Queremos un sistema que nos permita tomar la asistencia de alumnos, profesores, directivos y porteros.', '25000', '2023-09-18', '2023-08-18'),
-(31, 10, 'Necesitamos a un contador', '', '1700 x hora', '2023-08-25', '2023-08-18'),
-(32, 9, 'Propuesta de ejemplo', 'Una descripción de ejemplo', '4500', '2023-08-20', '2023-08-21'),
-(33, 13, 'Propuesta de ejemplo0', 'bla bla bla ', 'Negociable', '2023-08-24', '2023-08-23'),
-(34, 9, 'Análisis foda', 'ASDASDASDADS', 'Negociable', '2023-08-26', '2023-08-23');
 
 -- --------------------------------------------------------
 
@@ -205,27 +156,16 @@ INSERT INTO `t_roles` (`id_rol`, `rol`) VALUES
 CREATE TABLE `t_r_sub_habilidad_servicio` (
   `id_relacion` int(11) NOT NULL,
   `id_servicio` int(11) NOT NULL,
-  `id_sub_habilidad` int(11) DEFAULT NULL,
-  `personalizada` varchar(100) DEFAULT NULL
+  `id_sub_habilidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Volcado de datos para la tabla `t_r_sub_habilidad_servicio`
 --
 
-INSERT INTO `t_r_sub_habilidad_servicio` (`id_relacion`, `id_servicio`, `id_sub_habilidad`, `personalizada`) VALUES
-(2, 20, 6, NULL),
-(3, 20, 7, NULL),
-(4, 20, 5, NULL),
-(5, 20, 5, NULL),
-(8, 23, 3, NULL),
-(9, 23, 4, NULL),
-(10, 23, 5, NULL),
-(14, 23, 1, NULL),
-(15, 23, 2, NULL),
-(16, 23, 8, NULL),
-(18, 23, 9, NULL),
-(22, 20, 1, NULL);
+INSERT INTO `t_r_sub_habilidad_servicio` (`id_relacion`, `id_servicio`, `id_sub_habilidad`) VALUES
+(53, 41, 5),
+(54, 41, 6);
 
 -- --------------------------------------------------------
 
@@ -245,8 +185,7 @@ CREATE TABLE `t_servicios` (
 --
 
 INSERT INTO `t_servicios` (`id_servicio`, `perfil_tec`, `curriculum`, `id_ubicacion`) VALUES
-(20, 'Buenooo piolaaaa', 'ej1.pdf', 1),
-(23, 'Programo desde los 8 años y tengo experienca en Ajax y otras cosas muy complejas que pocas personas entienden :)', NULL, 1);
+(41, '', 'usuario41.pdf', 2);
 
 -- --------------------------------------------------------
 
@@ -274,9 +213,7 @@ INSERT INTO `t_sub_habilidades` (`id_sub_habilidad`, `id_habilidad`, `sub_habili
 (7, 1, 'PHP'),
 (8, 2, 'UX'),
 (9, 2, 'UI'),
-(10, 2, 'Adobe Photoshop'),
-(11, 4, 'Ej 1'),
-(12, 4, 'Ej 2');
+(10, 2, 'Adobe Photoshop');
 
 -- --------------------------------------------------------
 
@@ -338,14 +275,8 @@ CREATE TABLE `t_tecnicos` (
 --
 
 INSERT INTO `t_tecnicos` (`id_tecnico`, `nombre`, `apellido`, `dni`, `id_tecnica`, `id_especialidad`, `fecha_creacion`) VALUES
-(18, 'Nicolas Leonel', 'Corbalan', 46757313, 2, 1, '2023-08-17'),
-(20, 'Ramiro', 'Garcia', 46855412, 2, 1, '2023-08-17'),
-(21, 'Ailin Mara', 'Villar', 46574523, 2, 3, '2023-08-18'),
-(23, 'Ramon Gabriel', 'Pinto', 46854753, 2, 1, '2023-08-18'),
-(25, 'Santiago David', 'Garcia', 46588121, 2, 2, '2023-08-18'),
-(29, 'Tecnico', '123', 46757313, 2, 1, '2023-08-23'),
-(30, 'Tecnico de pruebaa', 'asjldkdasjklasdjkl', 1231232, 2, 1, '2023-08-23'),
-(31, 'Chanchito', 'Feliz', 46757313, 2, 2, '2023-08-23');
+(40, 'Nicolas Leonel', 'Corbalan', 46757313, 2, 1, '2023-09-05'),
+(41, 'Santiago Geremias', 'Moyano', 46723531, 2, 1, '2023-09-06');
 
 -- --------------------------------------------------------
 
@@ -413,23 +344,8 @@ CREATE TABLE `t_usuarios` (
 --
 
 INSERT INTO `t_usuarios` (`id_usuario`, `id_rol`, `gmail`, `contrasena`, `avatar`, `portada`, `id_validacion`, `fecha_creacion`) VALUES
-(18, 15, 'lele@gmail.com', '123', '64edc6a0b6820pato.jpeg', '64edc6a0b6ad6dlow vs b-art.webp', 3, '2023-08-17'),
-(19, 13, 'covidelpi@gmail.com', '123', '64edc5bf9462d64e03c860e621fantasmita_cool.jpg', '64edc5bf9492bkrnfx.jpg', 3, '2023-08-17'),
-(20, 14, 'ramiro@gmail.com', '123', '64edc6fcb2ee3avatar.png', '64edc6fcb313fportada.png', 3, '2023-08-17'),
-(21, 14, 'mara@gmail.com', '123', '64edc715ba7b1avatar.png', '64edc715ba9f6portada.png', 2, '2023-08-17'),
-(22, 13, 'cudi@gmail.com', '123', '64edc73165956avatar.png', '64edc731661cbportada.png', 3, '2023-08-17'),
-(23, 14, 'ramon@gmail.com', '123', '64edc4758c07064e0387d33023chica_anime.jpg', '64edc4758c36ehip hop.jpg', 3, '2023-08-18'),
-(24, 13, 'serenisima@gmail.com', '123', '64edc7803328davatar.png', '64edc780334f4portada.png', 3, '2023-08-18'),
-(25, 14, 'santiago.garcia@gmail.com', '123', '64edc756e41e5avatar.png', '64edc756e4429portada.png', 3, '2023-08-18'),
-(26, 13, 'capcom@gmail.com', '123', '64edc81925206avatar.png', '64edc81925456portada.png', 3, '2023-08-21'),
-(27, 13, 'twitter@gmail.com', '123', '64edc830db371avatar.png', '64edc830db63dportada.png', 3, '2023-08-21'),
-(28, 13, 'empresa_ejemplo@gmail.com', '123', '64edc84c7cc48avatar.png', '64edc84c7cec0portada.png', 3, '2023-08-23'),
-(29, 14, 'tecnico_ejemplo@gmail.com', '123', '64edc869299d6avatar.png', '64edc86929fa3portada.png', 3, '2023-08-23'),
-(30, 14, 'tecnico@gmail.com', '123', '64edc7df4630davatar.png', '64edc7df46573portada.png', 3, '2023-08-23'),
-(31, 14, 'tecnico2@gmail.com', '123', '64edc7fc194a5avatar.png', '64edc7fc196dcportada.png', 3, '2023-08-23'),
-(32, 13, 'empresa@gmail.com', '123', '64edc7a0e2715avatar.png', '64edc7a0e29a1portada.png', 3, '2023-08-23'),
-(33, 13, 'empresa2@gmail.com', '123', '64edc98854b00avatar.png', '64edc98854d2cportada.png', 3, '2023-08-23'),
-(39, 13, 'empresa_ejemplo2@gmail.com', '123', '64ede26a9c4f8pato.jpeg', '64ede26a9cf69hip hop.jpg', 3, '2023-08-29');
+(40, 15, 'nicolaslc.main@gmail.com', '$2y$10$vt/MXYcG/UVKlgdFEtp5IePR5VHCqjhv4yYgfuB/q4obeKolaiJi.', 'usuario40.jpeg', 'usuario40.jpeg', 3, '2023-09-05'),
+(41, 14, 'moyano@gmail.com', '$2y$10$0rxD8IlmIt9JZq4FjVbjI.IptvNJ5rrq3RhuTjmVHt/ZZ7bLOLbiG', 'usuario41.png', 'usuario41.png', 3, '2023-09-06');
 
 -- --------------------------------------------------------
 
@@ -581,7 +497,7 @@ ALTER TABLE `t_validaciones`
 -- AUTO_INCREMENT de la tabla `t_empresas`
 --
 ALTER TABLE `t_empresas`
-  MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `t_especialidades`
@@ -593,19 +509,19 @@ ALTER TABLE `t_especialidades`
 -- AUTO_INCREMENT de la tabla `t_habilidades`
 --
 ALTER TABLE `t_habilidades`
-  MODIFY `id_habilidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_habilidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `t_postulantes`
 --
 ALTER TABLE `t_postulantes`
-  MODIFY `id_postulacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id_postulacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT de la tabla `t_propuestas`
 --
 ALTER TABLE `t_propuestas`
-  MODIFY `id_propuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id_propuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `t_relaciones_tec_esp`
@@ -623,13 +539,13 @@ ALTER TABLE `t_roles`
 -- AUTO_INCREMENT de la tabla `t_r_sub_habilidad_servicio`
 --
 ALTER TABLE `t_r_sub_habilidad_servicio`
-  MODIFY `id_relacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_relacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT de la tabla `t_sub_habilidades`
 --
 ALTER TABLE `t_sub_habilidades`
-  MODIFY `id_sub_habilidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_sub_habilidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `t_tamanos`
@@ -659,7 +575,7 @@ ALTER TABLE `t_ubicaciones`
 -- AUTO_INCREMENT de la tabla `t_usuarios`
 --
 ALTER TABLE `t_usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT de la tabla `t_validaciones`
@@ -677,20 +593,20 @@ ALTER TABLE `t_validaciones`
 ALTER TABLE `t_empresas`
   ADD CONSTRAINT `tamaño de empresa` FOREIGN KEY (`id_tamano`) REFERENCES `t_tamanos` (`id_tamano`),
   ADD CONSTRAINT `tipo de empresa` FOREIGN KEY (`id_tipo`) REFERENCES `t_tipos` (`id_tipo`),
-  ADD CONSTRAINT `usuario dueño de la empresa` FOREIGN KEY (`id_usuario`) REFERENCES `t_usuarios` (`id_usuario`);
+  ADD CONSTRAINT `usuario dueño de la empresa` FOREIGN KEY (`id_usuario`) REFERENCES `t_usuarios` (`id_usuario`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `t_postulantes`
 --
 ALTER TABLE `t_postulantes`
-  ADD CONSTRAINT `propuesta a la que se postuló` FOREIGN KEY (`id_propuesta`) REFERENCES `t_propuestas` (`id_propuesta`),
-  ADD CONSTRAINT `tecnico postulado` FOREIGN KEY (`id_tecnico`) REFERENCES `t_tecnicos` (`id_tecnico`);
+  ADD CONSTRAINT `propuesta a la que se postuló` FOREIGN KEY (`id_propuesta`) REFERENCES `t_propuestas` (`id_propuesta`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tecnico postulado` FOREIGN KEY (`id_tecnico`) REFERENCES `t_tecnicos` (`id_tecnico`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `t_propuestas`
 --
 ALTER TABLE `t_propuestas`
-  ADD CONSTRAINT `empresa que generó la propuesta` FOREIGN KEY (`id_empresa`) REFERENCES `t_empresas` (`id_empresa`);
+  ADD CONSTRAINT `empresa que generó la propuesta` FOREIGN KEY (`id_empresa`) REFERENCES `t_empresas` (`id_empresa`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `t_relaciones_tec_esp`
@@ -703,13 +619,14 @@ ALTER TABLE `t_relaciones_tec_esp`
 -- Filtros para la tabla `t_r_sub_habilidad_servicio`
 --
 ALTER TABLE `t_r_sub_habilidad_servicio`
-  ADD CONSTRAINT `servicio` FOREIGN KEY (`id_servicio`) REFERENCES `t_servicios` (`id_servicio`),
-  ADD CONSTRAINT `sub-habilidad` FOREIGN KEY (`id_sub_habilidad`) REFERENCES `t_sub_habilidades` (`id_sub_habilidad`);
+  ADD CONSTRAINT `servicio` FOREIGN KEY (`id_servicio`) REFERENCES `t_servicios` (`id_servicio`) ON DELETE CASCADE,
+  ADD CONSTRAINT `sub-habilidad` FOREIGN KEY (`id_sub_habilidad`) REFERENCES `t_sub_habilidades` (`id_sub_habilidad`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `t_servicios`
 --
 ALTER TABLE `t_servicios`
+  ADD CONSTRAINT `tecnico a el que le pertenece el servicio` FOREIGN KEY (`id_servicio`) REFERENCES `t_tecnicos` (`id_tecnico`) ON DELETE CASCADE,
   ADD CONSTRAINT `ubicación (remoto-físico)` FOREIGN KEY (`id_ubicacion`) REFERENCES `t_ubicaciones` (`id_ubicacion`);
 
 --
@@ -724,7 +641,7 @@ ALTER TABLE `t_sub_habilidades`
 ALTER TABLE `t_tecnicos`
   ADD CONSTRAINT `especialidad del técnico` FOREIGN KEY (`id_especialidad`) REFERENCES `t_especialidades` (`id_especialidad`),
   ADD CONSTRAINT `técnica en la que se recibió` FOREIGN KEY (`id_tecnica`) REFERENCES `t_tecnicas` (`id_tecnica`),
-  ADD CONSTRAINT `usuario a el que pertenece el técnico` FOREIGN KEY (`id_tecnico`) REFERENCES `t_usuarios` (`id_usuario`);
+  ADD CONSTRAINT `usuario a el que pertenece el técnico` FOREIGN KEY (`id_tecnico`) REFERENCES `t_usuarios` (`id_usuario`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `t_usuarios`

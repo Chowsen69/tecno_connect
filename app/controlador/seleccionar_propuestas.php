@@ -18,7 +18,7 @@
             
             <li>
 
-                <img src="<?=URL_USUARIO . $fila["id_usuario"] ."/avatar/". $fila["avatar"]?>" width="20px" alt="Foto de perfil">
+                <img src="<?=AVATAR . $fila["avatar"]?>" width="20px" alt="Foto de perfil">
 
                 <span><a href="perfil.php?id_usuario=<?=$fila["id_usuario"]?>&id_rol=<?=$fila["id_rol"]?>"><?=$fila["nombre_empresa"]?></a></span>
 
@@ -68,7 +68,7 @@
                                 
                                 <li>
 
-                                    <img src="<?=URL_USUARIO . $postulante["id_usuario"] ."/avatar/". $postulante["avatar"]?>" width="20px" alt="Foto de perfil">
+                                    <img src="<?=AVATAR . $postulante["AVATAR"]?>" width="20px" alt="Foto de perfil">
 
                                     <a href="perfil.php?id_usuario=<?=$postulante["id_usuario"]?>&id_rol=<?=$postulante["id_rol"]?>"><?= $postulante["nombre"] . " " . $postulante["apellido"]?></a>
 

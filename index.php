@@ -5,55 +5,61 @@ session_start();
 // SI ESTÁ LOGUADO, REDIRECCIONAR AL INICIO.PHP, O SI NO ESTÁ VALIDADO MOSTRAR MSJ CORRESPONDIENTE
 if(isset($_SESSION["id_rol"])){
 
-    switch ($_SESSION["id_validacion"]){
+    if(isset($_SESSION["id_validacion"])){
+            
+        switch ($_SESSION["id_validacion"]){
 
-        case 1:
+            case 1:
 
-            echo "Tu cuenta está en proceso de validación";
+                echo "Tu cuenta está en proceso de validación";
 
-            break;
+                break;
 
-        case 2:
+            case 2:
 
-            echo "Tu cuenta fué rechazada, contacta a 'tecno.connect.oficial@gmail.com' en caso de cualquier reclamo";
+                echo "Tu cuenta fué rechazada, contacta a 'tecno.connect.oficial@gmail.com' en caso de cualquier reclamo";
 
-            break;
+                break;
 
-        case 3:
+            case 3:
 
-            switch ($_SESSION["id_rol"]) {
-        
-                case 15:
-        
-                    header("Location: app/vista/adm.php");
-        
-                    break;
-        
-                case 14:
-                
-                    header("Location: app/vista/tec.php");
-                
-                    break;
-        
-                case 13:
-                
-                    header("Location: app/vista/emp.php");
-                
-                    break;
-                
-                default:
-        
-                    # code...
-        
-                    break;
-                  
-                }
+                switch ($_SESSION["id_rol"]) {
+            
+                    case 15:
+            
+                        header("Location: app/vista/adm.php");
+            
+                        break;
+            
+                    case 14:
+                    
+                        header("Location: app/vista/tec.php");
+                    
+                        break;
+            
+                    case 13:
+                    
+                        header("Location: app/vista/emp.php");
+                    
+                        break;
+                    
+                    default:
+            
+                        # code...
+            
+                        break;
+                    
+                    }
 
-            break;
+                break;
 
-        default:
+            default:
 
-            echo "Algo salió mal durante la validación de tu cuenta";
+                echo "Algo salió mal durante la validación de tu cuenta";
+
+                break;
+
+        }
 
     }
 

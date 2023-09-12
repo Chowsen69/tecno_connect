@@ -6,9 +6,9 @@
 
         ?>
         
-        <img src="<?=URL_USUARIO . $usuario["id_usuario"] ."/portada/". $usuario["portada"]?>" width="50%" alt="Foto de portada">
+        <img src="<?=PORTADA . $usuario["portada"]?>" width="50%" alt="Foto de portada">
 
-        <img src="<?=URL_USUARIO . $usuario["id_usuario"] ."/avatar/". $usuario["avatar"]?>" alt="Foto de perfil">
+        <img src="<?=AVATAR . $usuario["avatar"]?>" alt="Foto de perfil">
 
         <?php
 
@@ -23,6 +23,8 @@
             <h1>Perfil de administrador</h1>
 
             <h2><?= $usuario["gmail"]; ?></h2>
+
+            <?php if($_GET["id_usuario"] == $_SESSION["id_usuario"]){ ?><a href="edit_perfil.php">Editar perfil</a><?php } ?>
 
             <?php
 

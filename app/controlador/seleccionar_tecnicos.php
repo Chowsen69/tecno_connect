@@ -15,7 +15,7 @@ if(mysqli_num_rows($res) > 0){
         ?>
         <li>
         
-            <img src="<?=URL_USUARIO . $fila["id_usuario"] ."/avatar/". $fila["avatar"]?>" width="20px" alt="Foto de perfil">
+            <img src="<?=AVATAR . $fila["avatar"]?>" width="20px" alt="Foto de perfil">
 
             <a href="perfil.php?id_usuario=<?=$fila["id_usuario"]?>&id_rol=<?=$fila["id_rol"]?>"><?=$fila["nombre"] . " " . $fila["apellido"]?></a>
 

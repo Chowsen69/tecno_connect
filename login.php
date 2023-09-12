@@ -48,14 +48,12 @@
         // BOTÓN DE LOGIN
 
         // Validar gmail (si existe o no)
-        $existe_gmail = mysqli_num_rows(mysqli_query($con, "SELECT gmail FROM t_usuarios WHERE gmail = '$_POST[gmail]'"));
+        $usuario = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM t_usuarios WHERE gmail = '$_POST[gmail]'"));
 
-        if($existe_gmail == 0){ $_SESSION["msj"] = "No existe una cuenta con esa dirección de correo electrónico"; }else{
-
+        if(empty($usuario)){ $_SESSION["msj"] = "No existe una cuenta con esa dirección de correo electrónico"; }else{
+            
             // Validar contraseña (si coincide con el gmail)
-            $usuario = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM t_usuarios WHERE gmail = '$_POST[gmail]' AND contrasena = '$_POST[clave]'"));
-
-            if(empty($usuario)){ $_SESSION["msj"] = "Contraseña incorrecta"; }else{
+            if(!password_verify($_POST["clave"], $usuario["contrasena"])){ $_SESSION["msj"] = "Contraseña incorrecta"; }else{
                 
                 unset($_SESSION["msj"]); // Borro cualquier mensaje que pueda haber
 
@@ -68,6 +66,8 @@
                         $_SESSION["id_rol"] = $usuario["id_rol"];
 
                         $_SESSION["id_tecnico"] = $usuario["id_usuario"];
+
+                        $_SESSION["id_validacion"] = $usuario["id_validacion"];
 
                         $_SESSION["id_empresa"] = mysqli_fetch_array(mysqli_query($con, "SELECT id_empresa FROM t_empresas WHERE id_usuario = '$usuario[id_usuario]'"))["id_empresa"];
 
@@ -102,6 +102,8 @@
 
                             $_SESSION["id_empresa"] = false;
 
+                            $_SESSION["id_validacion"] = $usuario["id_validacion"];
+
                             header("Location: app/vista/tec.php");
 
                         }
@@ -135,6 +137,8 @@
                             $_SESSION["id_empresa"] = $empresa["id_empresa"];
 
                             $_SESSION["id_tecnico"] = false;
+
+                            $_SESSION["id_validacion"] = $usuario["id_validacion"];
 
                             header("Location: app/vista/emp.php");
 

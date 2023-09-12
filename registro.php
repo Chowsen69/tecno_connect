@@ -55,48 +55,41 @@
             if($_POST["clave"] != $_POST["rep_clave"]){ $_SESSION["msj"] = "Las contraseñas no coinciden"; }else{
                 
                 // Y SI LAS CONTRASEÑAS COINCIDEN
-
                 $avatar = "por_defecto.png";
 
                 $portada = "por_defecto.png";
 
-                if(mysqli_query($con, "INSERT INTO t_usuarios(id_rol, gmail, contrasena, avatar, portada, id_validacion, fecha_creacion) VALUES('$_POST[id_rol]', '$_POST[gmail]', '$_POST[clave]', '$avatar', '$portada', '1', now())")){
+                $clave = password_hash($_POST["clave"], PASSWORD_DEFAULT);
+
+                if(mysqli_query($con, "INSERT INTO t_usuarios(id_rol, gmail, contrasena, avatar, portada, id_validacion, fecha_creacion) VALUES('$_POST[id_rol]', '$_POST[gmail]', '$clave', '$avatar', '$portada', '1', now())")){
 
                     unset($_SESSION["msj"]);
 
                     $_SESSION["id_usuario"] = mysqli_insert_id($con);
 
                     $_SESSION["id_rol"] = $_POST["id_rol"];
-
-                    $url = $_SERVER["DOCUMENT_ROOT"] ."/tecno_connect/publico/usuarios/". mysqli_insert_id($con) ."/";
-
-                    if(!file_exists($url)){
-
-                        mkdir($url);
-
-                        mkdir($url ."avatar/");
-
-                        mkdir($url ."portada/");
-
-                        mkdir($url ."curriculum/");
                         
                         // Asignarle un avatar por defecto
-                        $archivo = 'C://xampp/htdocs/tecno_connect/publico/img/por_defecto/avatar.png';
-                        $nuevo_archivo = "C://xampp/htdocs/tecno_connect/publico/usuarios/". mysqli_insert_id($con) ."/avatar/por_defecto.png";
+                        $archivo = $_SERVER["DOCUMENT_ROOT"] .'/tecno_connect/publico/img/por_defecto/avatar.png';
+
+                        $nuevo_archivo = $_SERVER["DOCUMENT_ROOT"] ."/tecno_connect/publico/img/avatar/usuario". mysqli_insert_id($con) .".png";
 
                         if (!copy($archivo, $nuevo_archivo)) {
                             echo "Error al copiar el archivo $archivo...\n";
                         }
 
                         // Asignarle una portada por defecto
-                        $archivo = 'C://xampp/htdocs/tecno_connect/publico/img/por_defecto/portada.png';
-                        $nuevo_archivo = "C://xampp/htdocs/tecno_connect/publico/usuarios/". mysqli_insert_id($con) ."/portada/por_defecto.png";
+                        $archivo = $_SERVER["DOCUMENT_ROOT"] .'/tecno_connect/publico/img/por_defecto/portada.png';
+
+                        $nuevo_archivo = $_SERVER["DOCUMENT_ROOT"] ."/tecno_connect/publico/img/portada/usuario". mysqli_insert_id($con) .".png";
 
                         if (!copy($archivo, $nuevo_archivo)) {
                             echo "Error al copiar el archivo $archivo...\n";
                         }
 
-                    }
+                        $nombre = "usuario". mysqli_insert_id($con) .".png";
+
+                        mysqli_query($con, "UPDATE t_usuarios SET avatar = '$nombre', portada = '$nombre' WHERE id_usuario = '".mysqli_insert_id($con)."'");
 
                 }else{
 

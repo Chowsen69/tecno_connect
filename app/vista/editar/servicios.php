@@ -26,27 +26,6 @@
         // CURRÍCULUM
         $url = $_SERVER["DOCUMENT_ROOT"] ."/tecno_connect/publico/usuarios/". $_SESSION["id_tecnico"] ."/";
 
-        if(!file_exists($url)){
-
-            mkdir($url);
-    
-        }
-        if(!file_exists($url . "avatar/")){
-    
-            mkdir($url . "avatar/");
-        
-        }
-        if(!file_exists($url . "portada/")){
-    
-            mkdir($url . "portada/");
-            
-        }
-        if(!file_exists($url . "curriculum/")){
-    
-            mkdir($url . "curriculum/");
-            
-        }
-
         if($_FILES["curriculum"]["name"] == ""){
 
             // Si no seleccionó ningún currículum
@@ -54,9 +33,9 @@
             
         }else{
     
-            $curriculum = uniqid() . $_FILES["curriculum"]["name"];
+            $curriculum = "usuario". $_SESSION["id_usuario"] .".". pathinfo($_FILES["curriculum"]["name"], PATHINFO_EXTENSION);
     
-            move_uploaded_file($_FILES["curriculum"]["tmp_name"], $url . "curriculum/" . $curriculum);
+            move_uploaded_file($_FILES["curriculum"]["tmp_name"], CURRICULUM . $curriculum);
     
         }
 
