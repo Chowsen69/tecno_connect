@@ -52,7 +52,7 @@
                     }
 
                     // EN CASO DE SER UNA EMPRESA, IMPLEMENTAR EL SISTEMA PARA VER A LOS POSTULANTES
-                    if($_SESSION["id_empresa"] != false){
+                    if($_SESSION["id_empresa"] != false AND $fila["id_empresa"] == $_SESSION["id_empresa"]){
 
                         $postulantes = mysqli_query($con, "SELECT * FROM t_postulantes INNER JOIN t_tecnicos ON t_postulantes.id_tecnico = t_tecnicos.id_tecnico INNER JOIN t_usuarios ON t_tecnicos.id_tecnico = t_usuarios.id_usuario WHERE id_propuesta = '$fila[id_propuesta]'");
 
@@ -94,14 +94,12 @@
 
                     }
 
-                    // EN CASO DE ESTAR EN EL PERFIL DE LA EMPRESA, IMPLEMENTAR EL EDITAR Y EL ELIMINAR
+                    // EN CASO DE ESTAR EN EL PERFIL DE LA EMPRESA, IMPLEMENTAR EL ELIMINAR
                     if(isset($_GET["id_usuario"])){
 
                         if($_GET["id_usuario"] == $_SESSION["id_usuario"] AND $_SESSION["id_empresa"] != false){
-
-                            ?><a href="">Editar</a><?php
-
-                            ?><a href="">Eliminar</a><?php
+                            
+                            ?><a href="../controlador/empresa/eliminar_propuesta.php?id_propuesta=<?=$fila["id_propuesta"]?>">Eliminar</a><?php
 
                         }
 

@@ -133,7 +133,7 @@
 
             // PROPUESTAS DE LA EMPRESA
             $query = "SELECT * FROM t_propuestas INNER JOIN t_empresas ON t_propuestas.id_empresa = t_empresas.id_empresa INNER JOIN t_usuarios ON t_empresas.id_usuario = t_usuarios.id_usuario WHERE t_usuarios.id_usuario = '$_GET[id_usuario]'";
-
+            
             require_once "../controlador/seleccionar_propuestas.php";
 
             break;

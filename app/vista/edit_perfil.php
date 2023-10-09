@@ -9,20 +9,20 @@ if(isset($_POST["btn_usuario"])){
 
     // Foto de perfil
     if($_FILES["avatar"]["name"] == ""){
-
+        
         // Si no seleccionó ninguna foto de perfil
         $avatar = mysqli_fetch_array(mysqli_query($con, "SELECT avatar FROM t_usuarios WHERE id_usuario = '$_SESSION[id_usuario]'"))["avatar"];
-
+    
     }else{
-
+        
         $avatar = "usuario". $_SESSION["id_usuario"] .".". pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION);
-
+        
         if(file_exists(AVATAR . $avatar)){
             unlink(AVATAR . $avatar);
         }
-
+        
         move_uploaded_file($_FILES["avatar"]["tmp_name"], AVATAR . $avatar);
-
+    
     }
 
     if($_FILES["portada"]["name"] == ""){
