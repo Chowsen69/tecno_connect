@@ -39,7 +39,10 @@
             ?>
             
             <h1><?=$tecnico["nombre"] . " " . $tecnico["apellido"]?></h1>
-
+            
+            <!-- Si sos administrador, añadir la opción de hacer administrador a este perfil -->
+            <?php if($_SESSION["id_rol"] == 15){ ?><a href="../controlador/admin/hacer_usuario_admin.php?id_usuario=<?=$usuario["id_usuario"]?>">Hacer administrador</a><?php }?>
+            
             <!-- EDITAR PERFIL -->
             <?php if($tecnico["id_tecnico"] == $_SESSION["id_usuario"]){ ?><a href="edit_perfil.php">Editar perfil</a><?php } ?>
 
@@ -115,6 +118,10 @@
             ?>
             
             <h1><?=$empresa["nombre_empresa"] ?></h1>
+
+            <!-- Si sos administrador, añadir la opción de hacer administrador a este perfil -->
+            <?php if($_SESSION["id_rol"] == 15){ ?><a href="../controlador/admin/hacer_usuario_admin.php?id_usuario=<?=$usuario["id_usuario"]?>">Hacer administrador</a><?php }?>
+            
 
             <!-- EDITAR PERFIL -->
             <?php if($empresa["id_usuario"] == $_SESSION["id_usuario"]){ ?><a href="edit_perfil.php">Editar perfil</a><?php } ?>

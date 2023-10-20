@@ -68,7 +68,7 @@
                                 
                                 <li>
 
-                                    <img src="<?=AVATAR . $postulante["AVATAR"]?>" width="20px" alt="Foto de perfil">
+                                    <img src="<?=AVATAR . $postulante["avatar"]?>" width="20px" alt="Foto de perfil">
 
                                     <a href="perfil.php?id_usuario=<?=$postulante["id_usuario"]?>&id_rol=<?=$postulante["id_rol"]?>"><?= $postulante["nombre"] . " " . $postulante["apellido"]?></a>
 

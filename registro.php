@@ -117,7 +117,7 @@
     
     // PASO DOS - REGISTRAR UN TÉCNICO
     }else if(isset($_POST["btn_registrar_tec"])){
-
+        
         if(mysqli_query($con, "INSERT INTO t_tecnicos(id_tecnico, nombre, apellido, dni, id_tecnica, id_especialidad, fecha_creacion) VALUES('$_SESSION[id_usuario]', '$_POST[nombre]', '$_POST[apellido]', '$_POST[dni]', '$_POST[tecnica]', '$_POST[especialidad]', now())")){
 
             $_SESSION["msj"] = "Felicidades, te registraste exitósamente";

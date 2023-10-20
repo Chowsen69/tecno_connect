@@ -9,20 +9,28 @@
         // RECIBO LOS DATOS ENVIADOS POR POST
         $id_empresa = $_SESSION["id_empresa"];
 
-        $titulo = $_POST["titulo"];
+        $titulo = htmlentities($_POST["titulo"]);
 
-        $descr = $_POST["descr"];
+        $descr = htmlentities($_POST["descr"]);
         
-        $pago_min = $_POST["pago_min"];
+        $pago_min = htmlentities($_POST["pago_min"]);
+        
+        if(empty($_POST["limite"])){
+        
+            $limite = "2024-06-20";
 
-        $limite = $_POST["limite"];
+        }else{
 
+            $limite = $_POST["limite"]; // Lo guarda como "yyyy-mm-dd"
+
+        }
+        
         $query = "INSERT INTO t_propuestas(id_empresa, titulo, descr, pago_min, limite, fecha_publicacion) VALUES('$id_empresa', '$titulo', '$descr', '$pago_min', '$limite', now())";
-
+        
         if(mysqli_query($con, $query)){
-
+        
             header("Location: ../../vista/emp.php");
-
+        
         }
 
     }

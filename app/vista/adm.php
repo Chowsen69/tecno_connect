@@ -11,8 +11,75 @@ if($_SESSION["id_rol"] != 15){
 ?>
 
     <h1>Vista de administrador</h1>
+    
+    <!-- TABLA DE ADMINISTRADORES -->
+    
+    <h2>Tabla de administradores</h2>
 
+    <?php
+    
+    $query = "SELECT * FROM t_usuarios INNER JOIN t_tecnicos ON t_usuarios.id_usuario = t_tecnicos.id_tecnico WHERE id_rol = '15'";
+
+    $res = mysqli_query($con, $query);
+
+    if(mysqli_num_rows($res) > 0){
+    
+        ?>
+        
+        <table border="1px">
+        
+            <thead>
+            
+                <tr>
+                
+                    <th>#</th>
+                    
+                    <th>Gmail</th>
+                    
+                    <th>Nombre completo</th>
+                    
+                    <th>Dni</th>
+                
+                </tr>
+
+            </thead>
+        
+            </tbody>
+
+                <?php
+
+                while($fila = mysqli_fetch_array($res)){
+                    
+                    ?>
+                    <tr>
+                    
+                    <td><?= $fila["id_usuario"] ?></td>
+                    
+                    <td><?= $fila["gmail"] ?></td>
+                    
+                    <td><?= $fila["nombre"] . " " . $fila["apellido"] ?></td>
+                    
+                    <td><?= $fila["dni"] ?></td>
+                    
+                    <tr>
+                    <?php
+
+                }
+
+                ?>
+        
+            </tbody>
+        
+        </table>
+
+        <?php
+
+    }
+
+    ?>
+    
     <!-- ACEPTAR CUENTAS -->
+    
     <?php
     
     $query = "SELECT * FROM t_usuarios WHERE id_validacion = '1'";
