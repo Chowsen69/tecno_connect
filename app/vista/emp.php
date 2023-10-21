@@ -64,9 +64,9 @@ if(empty($_SESSION["id_empresa"])){
         }
 
     </script>
-
+    
     <?php $query = "SELECT * FROM t_propuestas INNER JOIN t_empresas ON t_propuestas.id_empresa = t_empresas.id_empresa INNER JOIN t_usuarios ON t_empresas.id_usuario = t_usuarios.id_usuario WHERE t_propuestas.id_empresa = '$_SESSION[id_empresa]'"; ?>
-
+    
     <?php require_once ("../controlador/seleccionar_propuestas.php"); ?>
 
     <?php require_once ("../controlador/seleccionar_tecnicos.php"); ?>
