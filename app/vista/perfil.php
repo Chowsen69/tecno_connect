@@ -6,9 +6,9 @@
 
         ?>
         
-        <img src="<?=PORTADA . $usuario["portada"]?>" width="50%" alt="Foto de portada">
+        <img src="<?=PORTADA . $usuario["portada"]?>" width="100%" alt="Foto de portada">
 
-        <img src="<?=AVATAR . $usuario["avatar"]?>" alt="Foto de perfil">
+        <img src="<?=AVATAR . $usuario["avatar"]?>" alt="Foto de perfil" width="200">
 
         <?php
 

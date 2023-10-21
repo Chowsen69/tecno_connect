@@ -14,6 +14,12 @@
 
     session_start();
 
+    if(!empty($_SESSION["id_empresa"]) || !empty($_SESSION["id_tecnico"])){
+
+        header("location: index.php");
+
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -75,6 +81,10 @@
                 
                 echo "<p>Ese gmail ya está en uso, por favor escoja otro</p>";
 
+            }else if(strlen($_POST["clave"]) < 8){
+
+                echo "<p>Introduzca una clave de 8 o más dígitos</p>";
+
             }else if($_POST["clave"] != $_POST["rep_clave"]){
             
                 echo "<p>Las contraseñas no coniciden</p>";
@@ -107,21 +117,52 @@
         }
     
     // PASO DOS - REGISTRAR UNA EMPRESA
-    }else if(isset($_POST["btn_registrar_emprrr"])){
+    }else if(isset($_POST["btn_registrar_empr"])){
         
-        
+        // Valida que los input type="text" no estén vacíos
+        if(empty($_POST["nom_empr"]) || empty($_POST["cuit"]) || empty($_POST["localidad"]) || empty($_POST["sector"])){
 
-        // if(mysqli_query($con, "INSERT INTO t_empresas(id_usuario, nombre_empresa, cuit, localidad, sitio_web, sector, id_tipo, id_tamano, fecha_creacion) VALUES ('$_SESSION[id_usuario]', '$_POST[nom_empr]', '$_POST[cuit]', '$_POST[localidad]', '$_POST[sitio_web]', '$_POST[sector]', '$_POST[tipo]', '$_POST[tamano]', now())")){
-            
-        //     $_SESSION["msj"] = "Felicidades, te registraste exitósamente";
-            
-        //     unset($_SESSION["id_usuario"]);
-            
-        //     unset($_SESSION["id_rol"]);
-            
-        //     header("Location: login.php");
+            echo "<p>Rellene todos los campos de texto</p>";
+
+        // Valida que el cuit sean sólo números y 11 dígitos
+        }else if(!is_numeric($_POST["cuit"]) || strlen($_POST["cuit"]) != 11){
+
+            echo "<p>Introduzca un cuit válido</p>";
+
+        }else if(empty($_POST["tipo"])){
+
+            echo "<p>Seleccione el tipo de empresa</p>";
+
+        }else if(empty($_POST["tamano"])){
+
+            echo "<p>Seleccione el tamaño de su empresa</p>";
+
+        }else{
+
+            // PROCESAMIENTO DE TEXTO
+            $nom_empr = trim(htmlentities($_POST["nom_empr"]));
+
+            $localidad = trim(htmlentities(ucwords($_POST["localidad"])));
+
+            $sitio_web = trim(htmlentities($_POST["sitio_web"]));
+
+            $sector = trim(ucfirst(strtolower($_POST["sector"])));
+
+            $query = "INSERT INTO t_empresas(id_usuario, nombre_empresa, cuit, localidad, sitio_web, sector, id_tipo, id_tamano, fecha_creacion) VALUES ('$_SESSION[id_usuario]', '$nom_empr', '$_POST[cuit]', '$localidad', '$sitio_web', '$sector', '$_POST[tipo]', '$_POST[tamano]', now())";
         
-        // }
+            if(mysqli_query($con, $query)){
+
+                $_SESSION["msj"] = "Felicidades, te registraste exitósamente, ahora sólo queda esperar a que validen tu cuenta";
+
+                unset($_SESSION["id_usuario"]);
+
+                unset($_SESSION["id_rol"]);
+
+                header("Location: login.php");
+
+            }
+
+        }
     
     // PASO DOS - REGISTRAR UN TÉCNICO
     }else if(isset($_POST["btn_registrar_tec"])){
@@ -134,23 +175,36 @@
         
             echo "<p>Introduzca un DNI válido</p>";
 
-        }else if(empty($_POST["id_tecnica"])){
+        }else if(empty($_POST["tecnica"])){
         
-            echo "<p>Seleccione una técnica</p>";
+            echo "<p>Seleccione una técnica y una especialidad</p>";
+
+        }else if(empty($_POST["especialidad"])){
+        
+            echo "<p>Seleccione una especialidad</p>";
+            
+        }else{
+
+            // PROCESAMIENTO DE TEXTO
+            $nombre = ucwords($_POST["nombre"]);
+
+            $apellido = ucwords($_POST["apellido"]);
+
+            $query = "INSERT INTO t_tecnicos(id_tecnico, nombre, apellido, dni, id_tecnica, id_especialidad, fecha_creacion) VALUES('$_SESSION[id_usuario]', '$nombre', '$apellido', '$_POST[dni]', '$_POST[tecnica]', '$_POST[especialidad]', now())";
+
+            if(mysqli_query($con, $query)){
+
+                $_SESSION["msj"] = "Felicidades, te registraste exitósamente, ahora sólo queda esperar a que validen tu cuenta";
+
+                unset($_SESSION["id_usuario"]);
+
+                unset($_SESSION["id_rol"]);
+
+                header("Location: login.php");
+
+            }
 
         }
-
-        // if(mysqli_query($con, "INSERT INTO t_tecnicos(id_tecnico, nombre, apellido, dni, id_tecnica, id_especialidad, fecha_creacion) VALUES('$_SESSION[id_usuario]', '$_POST[nombre]', '$_POST[apellido]', '$_POST[dni]', '$_POST[tecnica]', '$_POST[especialidad]', now())")){
-            
-        //     $_SESSION["msj"] = "Felicidades, te registraste exitósamente";
-            
-        //     unset($_SESSION["id_usuario"]);
-            
-        //     unset($_SESSION["id_rol"]);
-            
-        //     header("Location: login.php");
-        
-        // }
 
     }
 
@@ -172,7 +226,7 @@
     ?>
 
     <!-- FORMULARIOS DE REGISTRO -->
-    <?php if(empty($_SESSION["id_usuario"])): ?>
+    <?php  if(empty($_SESSION["id_usuario"])): ?>
         <!-- FORMULARIO REGISTRO - PASO UNO -->
         <form action="registro.php" method="POST">
 
@@ -237,7 +291,7 @@
 
                 <span>Nombre de la empresa (*)</span>
 
-                <input type="text" name="nom_empr" id="nom_empr" pattern="[A-Za-z]{3}" value="<?php mostrarSiExiste("nom_empr") ?>"  autofocus>
+                <input type="text" name="nom_empr" id="nom_empr" maxlength="100" value="<?php mostrarSiExiste("nom_empr") ?>"  autofocus>
 
             </label>
 
@@ -245,7 +299,7 @@
 
                 <span>Cuit (*)</span>
 
-                <input type="text" name="cuit" id="cuit" value="<?php mostrarSiExiste("cuit") ?>" >
+                <input type="text" name="cuit" maxlength="11" id="cuit" value="<?php mostrarSiExiste("cuit") ?>" >
 
             </label>
             
@@ -253,7 +307,7 @@
 
                 <span>Localidad (*)</span>
 
-                <input type="text" name="localidad" id="localidad" value="<?php mostrarSiExiste("localidad") ?>" >
+                <input type="text" name="localidad" id="localidad" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+" maxlength="255" value="<?php mostrarSiExiste("localidad") ?>" >
 
             </label>
             
@@ -261,7 +315,7 @@
 
                 <span>Sitio web</span>
 
-                <input type="url" name="sitio_web" id="sitio_web" value="<?php mostrarSiExiste("sitio_web") ?>">
+                <input type="url" name="sitio_web" id="sitio_web" maxlength="255" value="<?php mostrarSiExiste("sitio_web") ?>">
 
             </label>
             
@@ -269,7 +323,7 @@
 
                 <span>Sector (*)</span>
 
-                <input type="text" name="sector" id="sector" value="<?php mostrarSiExiste("sector") ?>"  placeholder="A qué se dedica tu empresa">
+                <input type="text" name="sector" id="sector" maxlength="255" value="<?php mostrarSiExiste("sector") ?>"  placeholder="A qué se dedica tu empresa">
 
             </label>
             
@@ -287,7 +341,7 @@
 
                     while($fila = mysqli_fetch_array($res)){
 
-                        ?><option value="<?=$fila["id_tipo"]?>"><?=$fila["tipo"]?></option><?php
+                        ?><option value="<?=$fila["id_tipo"]?>" <?php if(!empty($_POST["tipo"]) && $_POST["tipo"] == $fila["id_tipo"]){ echo "selected"; } ?>><?=$fila["tipo"]?></option><?php
 
                     }
 
@@ -311,7 +365,7 @@
 
                     while($fila = mysqli_fetch_array($res)){
 
-                        ?><option value="<?=$fila["id_tamano"]?>"><?=$fila["tamano"]?></option><?php
+                        ?><option value="<?=$fila["id_tamano"]?>" <?php if(!empty($_POST["tamano"]) && $_POST["tamano"] == $fila["id_tamano"]){ echo "selected"; } ?>><?=$fila["tamano"]?></option><?php
 
                     }
 
@@ -350,7 +404,7 @@
 
                 <span>Número de documento (*)</span>
 
-                <input type="text" name="dni" id="dni" maxlength="8" value="<?php mostrarSiExiste("dni") ?>" >
+                <input type="text" placeholder="Sin espacio ni guiones" name="dni" id="dni" maxlength="8" value="<?php mostrarSiExiste("dni") ?>" >
             
             </label>
             
@@ -368,7 +422,7 @@
 
                     while($fila = mysqli_fetch_array($res)){
 
-                        ?><option value="<?= $fila["id_tecnica"] ?>"><?= $fila["tecnica"] ?></option><?php
+                        ?><option value="<?= $fila["id_tecnica"] ?>" <?php if(!empty($_POST["tecnica"]) && $_POST["tecnica"] == $fila["id_tecnica"]){ echo "selected"; } ?>><?= $fila["tecnica"] ?></option><?php
 
                     }
 
@@ -392,7 +446,7 @@
 
                     while($fila = mysqli_fetch_array($res)){
 
-                        ?><option value="<?= $fila["id_especialidad"] ?>"><?= $fila["especialidad"] ?></option><?php
+                        ?><option value="<?= $fila["id_especialidad"] ?>" <?php if(!empty($_POST["especialidad"]) && $_POST["especialidad"] == $fila["id_especialidad"]){ echo "selected"; } ?>><?= $fila["especialidad"] ?></option><?php
 
                     }
 

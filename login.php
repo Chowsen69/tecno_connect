@@ -189,7 +189,7 @@
 
             <span>Contraseña (*)</span>
 
-            <input type="password" name="clave" id="clave" required>
+            <input type="password" value="<?php mostrarSiExiste("gmail"); ?>" name="clave" id="clave" required>
 
         </label>
 
