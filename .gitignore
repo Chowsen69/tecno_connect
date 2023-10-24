@@ -1,4 +1,8 @@
-publico/img/avatar/
-publico/img/portada/
-publico/curriculum/
-app/modelo/conexion.php
+# Archivos y carpetas que quiero ignorar
+publico/img/avatar/*
+publico/img/portada/*
+publico/curriculum/*
+
+# Exepciones que no quiero ignorar
+!publico/img/avatar/por_defecto.png
+!publico/img/portada/por_defecto.png
