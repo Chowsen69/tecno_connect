@@ -116,6 +116,23 @@
 
         }
     
+    // BOTÓN DE CANCELAR
+    }else if(isset($_POST["btn_cancelar"]) && empty($_SESSION["id_empresa"]) && empty($_SESSION["id_tecnico"])){
+
+        $query = "DELETE FROM t_usuarios WHERE id_usuario = '$_SESSION[id_usuario]'";
+
+        if(mysqli_query($con, $query)){
+
+            unset($_SESSION["id_usuario"]);
+
+            unset($_SESSION["id_rol"]);
+
+        }else{
+
+            echo "<p>Hubo un error a la hora de cancelar la petición :(</p>";
+
+        }
+
     // PASO DOS - REGISTRAR UNA EMPRESA
     }else if(isset($_POST["btn_registrar_empr"])){
         
@@ -254,7 +271,7 @@
             
             </label>
 
-            <p>¿Qué quieres registrar? Decide bien, porque una vez escojes no hay vuelta atrás!</p>
+            <p>¿Qué quieres registrar?</p>
 
             <div>
                 
@@ -331,7 +348,7 @@
 
                 <span>Tipo (*)</span>
 
-                <select name="tipo" id="tipo" >
+                <select name="tipo" id="tipo">
                 
                     <option value="" hidden>Seleccione el tipo</option>
 
@@ -375,7 +392,7 @@
 
             </label>
 
-            <button type="reset"><a href="app/controlador/cerrar_sesion.php">Cancelar</a></button>
+            <button name="btn_cancelar">Cancelar</button>
 
             <button type="submit" name="btn_registrar_empr">Completar registro</button>
 
@@ -456,7 +473,7 @@
 
             </label>
 
-            <button type="reset"><a href="app/controlador/cerrar_sesion.php">Cancelar</a></button>
+            <button name="btn_cancelar">Cancelar</button>
 
             <button type="submit" name="btn_registrar_tec">Completar registro</button>
 
