@@ -106,11 +106,15 @@ if($_SESSION["id_rol"] != 15){
                     if(!empty($tecnico)){
                     ?>
                     
-                    <p><?=$tecnico["nombre"] ." ". $tecnico["apellido"]?></p>
+                    <p>Nombres completo: <?=$tecnico["nombre"] ." ". $tecnico["apellido"]?></p>
 
-                    <p><?=$tecnico["dni"]?></p>
+                    <p>Dni: <?=$tecnico["dni"]?></p>
 
-                    <p><?=$tecnico["tecnica"] ." - ". $tecnico["especialidad"]?></p>
+                    <p>Tecnica - Especialidad: <?=$tecnico["tecnica"] ." - ". $tecnico["especialidad"]?></p>
+
+                    <a href="../controlador/admin/rechazar_usuario.php?id_usuario=<?=$fila["id_usuario"]?>">Rechazar</a>
+
+                    <a href="../controlador/admin/aceptar_usuario.php?id_usuario=<?=$fila["id_usuario"]?>">Aceptar</a>
 
                     <?php
                     }else{
@@ -126,19 +130,23 @@ if($_SESSION["id_rol"] != 15){
                     if(!empty($empresa)){
                     ?>
                     
-                    <p><?=$empresa["nombre_empresa"]?></p>
+                    <p>Nombre de la empresa: <?=$empresa["nombre_empresa"]?></p>
 
-                    <p><?=$empresa["cuit"]?></p>
+                    <p>Cuit: <?=$empresa["cuit"]?></p>
 
-                    <p><?=$empresa["localidad"]?></p>
+                    <p>Localidad: <?=$empresa["localidad"]?></p>
 
-                    <p><?=$empresa["sitio_web"]?></p>
+                    <p>Sitio web: <?=$empresa["sitio_web"]?></p>
 
-                    <p><?=$empresa["sector"]?></p>
+                    <p>Sector: <?=$empresa["sector"]?></p>
 
-                    <p><?=$empresa["tipo"]?></p>
+                    <p>Tipo de empresa: <?=$empresa["tipo"]?></p>
 
-                    <p><?=$empresa["tamano"]?></p>
+                    <p>Tamaño: <?=$empresa["tamano"]?></p>
+
+                    <a href="../controlador/admin/rechazar_usuario.php?id_usuario=<?=$fila["id_usuario"]?>">Rechazar</a>
+
+                    <a href="../controlador/admin/aceptar_usuario.php?id_usuario=<?=$fila["id_usuario"]?>">Aceptar</a>
 
                     <?php
                     }else{
@@ -150,11 +158,7 @@ if($_SESSION["id_rol"] != 15){
                 }
 
                 ?>
-                
-                <a href="../controlador/admin/rechazar_usuario.php?id_usuario=<?=$fila["id_usuario"]?>">Rechazar</a>
 
-                <a href="../controlador/admin/aceptar_usuario.php?id_usuario=<?=$fila["id_usuario"]?>">Aceptar</a>
-            
             </li><?php
 
         }
